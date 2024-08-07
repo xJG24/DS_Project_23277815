@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ds.VitalSignControlService";
+option java_outer_classname = "VitalSignControlServiceImpl";
+
+package ds.VitalSignControlService;
+
+service VitalSignControlService {
+	rpc GetVitalSigns(GetVitalSignsRequest) returns (GetVitalSignsResponse);
+	rpc SetVitalSigns(stream SetVitalSignsRequest) returns (SetVitalSignsResponse);
+	rpc MonitorVitalSignsReading(stream VitalSignsMonitorRequest) returns (stream VitalSignsMonitorResponse);
+	rpc AlertStaffOfVitalSignsProblem(VitalSignsProblemRequest) returns (VitalSignsProblemResponse);
+}
+
+enum OperationalStatus {
+	Undefined = 0;
+	Success = 1;
+	Failure = 2;
+	Error = 3;
+}
+
+message GetVitalSignsRequest{
+	int32 patientID = 1;
+}
+
+message GetVitalSignsResponse {
+	int32 patientID = 1;
+	double time = 2;
+	int32 heartRateBPM = 3;
+	double bodyTemp = 4;
+	int32 Spo2 = 5;
+}
+
+message SetVitalSignsRequest {
+	int32 patientID = 1;
+	double time = 2;
+	int32 heartRateBPM = 3;
+	double bodyTemp = 4;
+	int32 Spo2 = 5;
+}
+
+message SetVitalSignsResponse {
+	int32 patientID = 1;
+	OperationalStatus result = 2;
+	string statusMessage = 3;
+}
+
+message VitalSignsMonitorRequest {
+	int32 patientID = 1;
+	double time = 2;
+	int32 heartRateBPM = 3;
+	double bodyTemp = 4;
+	int32 Spo2 = 5;
+}
+
+message VitalSignsMonitorResponse {
+	int32 patientID = 1;
+    OperationalStatus result = 2;
+    string statusMessage = 3;
+}
+
+message VitalSignsProblemRequest {
+    int32 patientID = 1;
+    string problemDescription = 2;
+}
+
+message VitalSignsProblemResponse {
+    int32 patientID = 1;
+    OperationalStatus result = 2;
+    string statusMessage = 3;
+}

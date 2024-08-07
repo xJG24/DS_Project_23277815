@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ds.SmartBedControlService";
+option java_outer_classname = "SmartBedControlServiceImpl";
+
+package ds.SmartBedControlService;
+
+// Interface exported by the server.
+service SmartBedControlService {
+	rpc GetBedPosition_do(Empty) returns (GetBedPositionResponse) {}
+	rpc SetBedHeadPosition_do(SetBedHeadPositionRequest) returns (SetBedHeadPositionResponse) {}
+	rpc SetBedFootPosition_do(SetBedFootPositionRequest) returns (SetBedFootPositionResponse) {}
+	rpc ResetBedPosition_do(Empty) returns (ResetBedPositionResponse) {}
+}
+
+enum OperationalStatus {
+	Undefined = 0;
+	Success = 1;
+	Failure = 2;
+	Error = 3;
+}
+
+
+
+message Empty {}
+
+message GetBedPositionResponse{
+	float bedHeadPosition = 1;
+	float bedFootPosition = 2;
+}
+
+message ResetBedPositionResponse {
+	float bedHeadPosition = 1;
+	float bedFootPosition = 2;
+	OperationalStatus result = 3;
+	string statusMessage = 4;
+}
+
+message SetBedHeadPositionRequest {
+  	float bedHeadPosition = 1;
+	OperationalStatus result = 2;
+}
+
+message SetBedHeadPositionResponse {
+  	float bedHeadPosition = 1;
+	OperationalStatus result = 2;
+	string statusMessage = 3;
+}
+
+message SetBedFootPositionRequest {
+	float bedFootPosition = 1;
+}
+
+message SetBedFootPositionResponse{
+	float bedFootPosition = 1;
+	OperationalStatus result = 2;
+	string statusMessage = 3;
+}

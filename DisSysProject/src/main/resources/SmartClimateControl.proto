@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ds.SmartClimateControlService";
+option java_outer_classname = "SmartClimateControlServiceImpl";
+
+service SmartBedControlService {
+	rpc GetClimateReading(GetClimateRequest)  returns (GetClimateReadingResponse) {}
+	rpc SetTemperature_do(SetTemperatureRequest) returns (SetTemperatureResponse) {}
+	rpc SetHumidity_do(SetHumidityRequest) returns (SetHumidityResponse) {}
+
+}
+
+enum OperationalStatus {
+	Undefined = 0;
+	Success = 1;
+	Failure = 2;
+	Error = 3;
+}
+
+message GetClimateRequest {
+	int32 roomID = 1;
+}
+
+message GetClimateReadingResponse {
+	int32 roomID = 1;
+	float temperature = 2;
+	float humidity = 3;
+}
+
+message SetTemperatureRequest {
+	float temperature = 1;
+}
+
+message SetTemperatureResponse {
+	int32 roomID = 1;
+	float temperature = 2;
+	OperationalStatus result = 3;
+	string statusMessage = 4;
+}
+
+message SetHumidityRequest {
+	float humidity = 1;
+}
+
+message SetHumidityResponse {
+	int32 roomID = 1;
+	float humidity = 2;
+	OperationalStatus result = 3;
+	string statusMessage = 4;
+}
