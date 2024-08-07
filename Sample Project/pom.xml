@@ -94,7 +94,7 @@
 <includeMavenTypes>direct</includeMavenTypes>
 <inputDirectories>
 <!--  This is the input path  -->
-<include>src/main/resources/proto</include>
+<include>C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\SampleProject\src\main\resources</include>
 </inputDirectories>
 <outputTargets>
 <outputTarget>

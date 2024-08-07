@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "SmartBedControlService";
+option java_outer_classname = "SmartBedControlServiceImpl";
+
+package service1;
+
+// Interface exported by the server.
+service SmartBedControlService {
+	rpc getBedPosition_do(Empty) returns (getBedPositionResponse) {}
+	rpc setBedHeadPosition_do(setBedHeadPositionRequest) returns (setBedHeadPositionResponse) {}
+	rpc setBedFootPosition_do(setBedFootPositionRequest) returns (setBedFootPositionResponse) {}
+	rpc resetBedPosition_do(Empty) returns (resetBedPositionResponse) {}
+}
+
+enum OperationalSuccess {
+	Success = 1;
+	Failure = 2;
+}
+
+
+
+message Empty {}
+
+message getBedPositionResponse{
+	float bedHeadPosition = 1;
+	float bedFootPosition = 2;
+}
+
+message resetBedPositionResponse {
+	float bedHeadPosition = 1;
+	float bedFootPosition = 2;
+	OperationalSuccess result = 3;
+	string operationStatus = 4;
+}
+
+message setBedHeadPositionRequest {
+  	float bedHeadPosition = 1;
+	OperationalSuccess result = 2;
+}
+
+message setBedHeadPositionResponse {
+  	float bedHeadPosition = 1;
+	OperationalSuccess result = 2;
+	string operationStatus = 3;
+}
+
+message setBedFootPositionRequest {
+	float bedFootPosition = 1;
+}
+
+message setBedFootPositionResponse{
+	float bedFootPosition = 1;
+	OperationalSuccess result = 2;
+	string operationStatus = 3;
+}
