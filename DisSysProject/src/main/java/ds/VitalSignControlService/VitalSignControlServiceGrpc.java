@@ -28,78 +28,78 @@ public final class VitalSignControlServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  @java.lang.Deprecated // Use {@link #getGetVitalSignsMethod()} instead. 
+  @java.lang.Deprecated // Use {@link #getGetVitalSignsDoMethod()} instead. 
   public static final io.grpc.MethodDescriptor<ds.VitalSignControlService.GetVitalSignsRequest,
-      ds.VitalSignControlService.GetVitalSignsResponse> METHOD_GET_VITAL_SIGNS = getGetVitalSignsMethodHelper();
+      ds.VitalSignControlService.GetVitalSignsResponse> METHOD_GET_VITAL_SIGNS_DO = getGetVitalSignsDoMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<ds.VitalSignControlService.GetVitalSignsRequest,
-      ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsMethod;
+      ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsDoMethod;
 
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<ds.VitalSignControlService.GetVitalSignsRequest,
-      ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsMethod() {
-    return getGetVitalSignsMethodHelper();
+      ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsDoMethod() {
+    return getGetVitalSignsDoMethodHelper();
   }
 
   private static io.grpc.MethodDescriptor<ds.VitalSignControlService.GetVitalSignsRequest,
-      ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsMethodHelper() {
-    io.grpc.MethodDescriptor<ds.VitalSignControlService.GetVitalSignsRequest, ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsMethod;
-    if ((getGetVitalSignsMethod = VitalSignControlServiceGrpc.getGetVitalSignsMethod) == null) {
+      ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsDoMethodHelper() {
+    io.grpc.MethodDescriptor<ds.VitalSignControlService.GetVitalSignsRequest, ds.VitalSignControlService.GetVitalSignsResponse> getGetVitalSignsDoMethod;
+    if ((getGetVitalSignsDoMethod = VitalSignControlServiceGrpc.getGetVitalSignsDoMethod) == null) {
       synchronized (VitalSignControlServiceGrpc.class) {
-        if ((getGetVitalSignsMethod = VitalSignControlServiceGrpc.getGetVitalSignsMethod) == null) {
-          VitalSignControlServiceGrpc.getGetVitalSignsMethod = getGetVitalSignsMethod = 
+        if ((getGetVitalSignsDoMethod = VitalSignControlServiceGrpc.getGetVitalSignsDoMethod) == null) {
+          VitalSignControlServiceGrpc.getGetVitalSignsDoMethod = getGetVitalSignsDoMethod = 
               io.grpc.MethodDescriptor.<ds.VitalSignControlService.GetVitalSignsRequest, ds.VitalSignControlService.GetVitalSignsResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "ds.VitalSignControlService.VitalSignControlService", "GetVitalSigns"))
+                  "ds.VitalSignControlService.VitalSignControlService", "GetVitalSigns_do"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.VitalSignControlService.GetVitalSignsRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.VitalSignControlService.GetVitalSignsResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new VitalSignControlServiceMethodDescriptorSupplier("GetVitalSigns"))
+                  .setSchemaDescriptor(new VitalSignControlServiceMethodDescriptorSupplier("GetVitalSigns_do"))
                   .build();
           }
         }
      }
-     return getGetVitalSignsMethod;
+     return getGetVitalSignsDoMethod;
   }
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  @java.lang.Deprecated // Use {@link #getSetVitalSignsMethod()} instead. 
+  @java.lang.Deprecated // Use {@link #getSetVitalSignsDoMethod()} instead. 
   public static final io.grpc.MethodDescriptor<ds.VitalSignControlService.SetVitalSignsRequest,
-      ds.VitalSignControlService.SetVitalSignsResponse> METHOD_SET_VITAL_SIGNS = getSetVitalSignsMethodHelper();
+      ds.VitalSignControlService.SetVitalSignsResponse> METHOD_SET_VITAL_SIGNS_DO = getSetVitalSignsDoMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<ds.VitalSignControlService.SetVitalSignsRequest,
-      ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsMethod;
+      ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsDoMethod;
 
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<ds.VitalSignControlService.SetVitalSignsRequest,
-      ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsMethod() {
-    return getSetVitalSignsMethodHelper();
+      ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsDoMethod() {
+    return getSetVitalSignsDoMethodHelper();
   }
 
   private static io.grpc.MethodDescriptor<ds.VitalSignControlService.SetVitalSignsRequest,
-      ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsMethodHelper() {
-    io.grpc.MethodDescriptor<ds.VitalSignControlService.SetVitalSignsRequest, ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsMethod;
-    if ((getSetVitalSignsMethod = VitalSignControlServiceGrpc.getSetVitalSignsMethod) == null) {
+      ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsDoMethodHelper() {
+    io.grpc.MethodDescriptor<ds.VitalSignControlService.SetVitalSignsRequest, ds.VitalSignControlService.SetVitalSignsResponse> getSetVitalSignsDoMethod;
+    if ((getSetVitalSignsDoMethod = VitalSignControlServiceGrpc.getSetVitalSignsDoMethod) == null) {
       synchronized (VitalSignControlServiceGrpc.class) {
-        if ((getSetVitalSignsMethod = VitalSignControlServiceGrpc.getSetVitalSignsMethod) == null) {
-          VitalSignControlServiceGrpc.getSetVitalSignsMethod = getSetVitalSignsMethod = 
+        if ((getSetVitalSignsDoMethod = VitalSignControlServiceGrpc.getSetVitalSignsDoMethod) == null) {
+          VitalSignControlServiceGrpc.getSetVitalSignsDoMethod = getSetVitalSignsDoMethod = 
               io.grpc.MethodDescriptor.<ds.VitalSignControlService.SetVitalSignsRequest, ds.VitalSignControlService.SetVitalSignsResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
               .setFullMethodName(generateFullMethodName(
-                  "ds.VitalSignControlService.VitalSignControlService", "SetVitalSigns"))
+                  "ds.VitalSignControlService.VitalSignControlService", "SetVitalSigns_do"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.VitalSignControlService.SetVitalSignsRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.VitalSignControlService.SetVitalSignsResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new VitalSignControlServiceMethodDescriptorSupplier("SetVitalSigns"))
+                  .setSchemaDescriptor(new VitalSignControlServiceMethodDescriptorSupplier("SetVitalSigns_do"))
                   .build();
           }
         }
      }
-     return getSetVitalSignsMethod;
+     return getSetVitalSignsDoMethod;
   }
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getMonitorVitalSignsReadingMethod()} instead. 
@@ -205,16 +205,16 @@ public final class VitalSignControlServiceGrpc {
 
     /**
      */
-    public void getVitalSigns(ds.VitalSignControlService.GetVitalSignsRequest request,
+    public void getVitalSignsDo(ds.VitalSignControlService.GetVitalSignsRequest request,
         io.grpc.stub.StreamObserver<ds.VitalSignControlService.GetVitalSignsResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetVitalSignsMethodHelper(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetVitalSignsDoMethodHelper(), responseObserver);
     }
 
     /**
      */
-    public io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsRequest> setVitalSigns(
+    public io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsRequest> setVitalSignsDo(
         io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(getSetVitalSignsMethodHelper(), responseObserver);
+      return asyncUnimplementedStreamingCall(getSetVitalSignsDoMethodHelper(), responseObserver);
     }
 
     /**
@@ -234,19 +234,19 @@ public final class VitalSignControlServiceGrpc {
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetVitalSignsMethodHelper(),
+            getGetVitalSignsDoMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 ds.VitalSignControlService.GetVitalSignsRequest,
                 ds.VitalSignControlService.GetVitalSignsResponse>(
-                  this, METHODID_GET_VITAL_SIGNS)))
+                  this, METHODID_GET_VITAL_SIGNS_DO)))
           .addMethod(
-            getSetVitalSignsMethodHelper(),
+            getSetVitalSignsDoMethodHelper(),
             asyncClientStreamingCall(
               new MethodHandlers<
                 ds.VitalSignControlService.SetVitalSignsRequest,
                 ds.VitalSignControlService.SetVitalSignsResponse>(
-                  this, METHODID_SET_VITAL_SIGNS)))
+                  this, METHODID_SET_VITAL_SIGNS_DO)))
           .addMethod(
             getMonitorVitalSignsReadingMethodHelper(),
             asyncBidiStreamingCall(
@@ -285,18 +285,18 @@ public final class VitalSignControlServiceGrpc {
 
     /**
      */
-    public void getVitalSigns(ds.VitalSignControlService.GetVitalSignsRequest request,
+    public void getVitalSignsDo(ds.VitalSignControlService.GetVitalSignsRequest request,
         io.grpc.stub.StreamObserver<ds.VitalSignControlService.GetVitalSignsResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetVitalSignsMethodHelper(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetVitalSignsDoMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsRequest> setVitalSigns(
+    public io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsRequest> setVitalSignsDo(
         io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsResponse> responseObserver) {
       return asyncClientStreamingCall(
-          getChannel().newCall(getSetVitalSignsMethodHelper(), getCallOptions()), responseObserver);
+          getChannel().newCall(getSetVitalSignsDoMethodHelper(), getCallOptions()), responseObserver);
     }
 
     /**
@@ -336,9 +336,9 @@ public final class VitalSignControlServiceGrpc {
 
     /**
      */
-    public ds.VitalSignControlService.GetVitalSignsResponse getVitalSigns(ds.VitalSignControlService.GetVitalSignsRequest request) {
+    public ds.VitalSignControlService.GetVitalSignsResponse getVitalSignsDo(ds.VitalSignControlService.GetVitalSignsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetVitalSignsMethodHelper(), getCallOptions(), request);
+          getChannel(), getGetVitalSignsDoMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -369,10 +369,10 @@ public final class VitalSignControlServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<ds.VitalSignControlService.GetVitalSignsResponse> getVitalSigns(
+    public com.google.common.util.concurrent.ListenableFuture<ds.VitalSignControlService.GetVitalSignsResponse> getVitalSignsDo(
         ds.VitalSignControlService.GetVitalSignsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetVitalSignsMethodHelper(), getCallOptions()), request);
+          getChannel().newCall(getGetVitalSignsDoMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -384,9 +384,9 @@ public final class VitalSignControlServiceGrpc {
     }
   }
 
-  private static final int METHODID_GET_VITAL_SIGNS = 0;
+  private static final int METHODID_GET_VITAL_SIGNS_DO = 0;
   private static final int METHODID_ALERT_STAFF_OF_VITAL_SIGNS_PROBLEM = 1;
-  private static final int METHODID_SET_VITAL_SIGNS = 2;
+  private static final int METHODID_SET_VITAL_SIGNS_DO = 2;
   private static final int METHODID_MONITOR_VITAL_SIGNS_READING = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
@@ -406,8 +406,8 @@ public final class VitalSignControlServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_VITAL_SIGNS:
-          serviceImpl.getVitalSigns((ds.VitalSignControlService.GetVitalSignsRequest) request,
+        case METHODID_GET_VITAL_SIGNS_DO:
+          serviceImpl.getVitalSignsDo((ds.VitalSignControlService.GetVitalSignsRequest) request,
               (io.grpc.stub.StreamObserver<ds.VitalSignControlService.GetVitalSignsResponse>) responseObserver);
           break;
         case METHODID_ALERT_STAFF_OF_VITAL_SIGNS_PROBLEM:
@@ -424,8 +424,8 @@ public final class VitalSignControlServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_SET_VITAL_SIGNS:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.setVitalSigns(
+        case METHODID_SET_VITAL_SIGNS_DO:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.setVitalSignsDo(
               (io.grpc.stub.StreamObserver<ds.VitalSignControlService.SetVitalSignsResponse>) responseObserver);
         case METHODID_MONITOR_VITAL_SIGNS_READING:
           return (io.grpc.stub.StreamObserver<Req>) serviceImpl.monitorVitalSignsReading(
@@ -481,8 +481,8 @@ public final class VitalSignControlServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new VitalSignControlServiceFileDescriptorSupplier())
-              .addMethod(getGetVitalSignsMethodHelper())
-              .addMethod(getSetVitalSignsMethodHelper())
+              .addMethod(getGetVitalSignsDoMethodHelper())
+              .addMethod(getSetVitalSignsDoMethodHelper())
               .addMethod(getMonitorVitalSignsReadingMethodHelper())
               .addMethod(getAlertStaffOfVitalSignsProblemMethodHelper())
               .build();

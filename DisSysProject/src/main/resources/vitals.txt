@@ -1,0 +1,3 @@
+patientID, heartRateBPM, bodyTemp, Spo2, time
+
+1,76,36.5,95%,datetime

@@ -7,8 +7,8 @@ option java_outer_classname = "VitalSignControlServiceImpl";
 package ds.VitalSignControlService;
 
 service VitalSignControlService {
-	rpc GetVitalSigns(GetVitalSignsRequest) returns (GetVitalSignsResponse);
-	rpc SetVitalSigns(stream SetVitalSignsRequest) returns (SetVitalSignsResponse);
+	rpc GetVitalSigns_do(GetVitalSignsRequest) returns (GetVitalSignsResponse);
+	rpc SetVitalSigns_do(stream SetVitalSignsRequest) returns (SetVitalSignsResponse);
 	rpc MonitorVitalSignsReading(stream VitalSignsMonitorRequest) returns (stream VitalSignsMonitorResponse);
 	rpc AlertStaffOfVitalSignsProblem(VitalSignsProblemRequest) returns (VitalSignsProblemResponse);
 }

@@ -87,23 +87,23 @@ public final class VitalSignControlServiceImpl {
       "2-.ds.VitalSignControlService.Operationa" +
       "lStatus\022\025\n\rstatusMessage\030\003 \001(\t*G\n\021Operat" +
       "ionalStatus\022\r\n\tUndefined\020\000\022\013\n\007Success\020\001\022" +
-      "\013\n\007Failure\020\002\022\t\n\005Error\020\0032\244\004\n\027VitalSignCon" +
-      "trolService\022t\n\rGetVitalSigns\0220.ds.VitalS" +
-      "ignControlService.GetVitalSignsRequest\0321" +
-      ".ds.VitalSignControlService.GetVitalSign" +
-      "sResponse\022v\n\rSetVitalSigns\0220.ds.VitalSig" +
-      "nControlService.SetVitalSignsRequest\0321.d" +
-      "s.VitalSignControlService.SetVitalSignsR" +
-      "esponse(\001\022\213\001\n\030MonitorVitalSignsReading\0224" +
-      ".ds.VitalSignControlService.VitalSignsMo" +
-      "nitorRequest\0325.ds.VitalSignControlServic" +
-      "e.VitalSignsMonitorResponse(\0010\001\022\214\001\n\035Aler" +
-      "tStaffOfVitalSignsProblem\0224.ds.VitalSign" +
-      "ControlService.VitalSignsProblemRequest\032" +
-      "5.ds.VitalSignControlService.VitalSignsP" +
-      "roblemResponseB;\n\032ds.VitalSignControlSer" +
-      "viceB\033VitalSignControlServiceImplP\001b\006pro" +
-      "to3"
+      "\013\n\007Failure\020\002\022\t\n\005Error\020\0032\252\004\n\027VitalSignCon" +
+      "trolService\022w\n\020GetVitalSigns_do\0220.ds.Vit" +
+      "alSignControlService.GetVitalSignsReques" +
+      "t\0321.ds.VitalSignControlService.GetVitalS" +
+      "ignsResponse\022y\n\020SetVitalSigns_do\0220.ds.Vi" +
+      "talSignControlService.SetVitalSignsReque" +
+      "st\0321.ds.VitalSignControlService.SetVital" +
+      "SignsResponse(\001\022\213\001\n\030MonitorVitalSignsRea" +
+      "ding\0224.ds.VitalSignControlService.VitalS" +
+      "ignsMonitorRequest\0325.ds.VitalSignControl" +
+      "Service.VitalSignsMonitorResponse(\0010\001\022\214\001" +
+      "\n\035AlertStaffOfVitalSignsProblem\0224.ds.Vit" +
+      "alSignControlService.VitalSignsProblemRe" +
+      "quest\0325.ds.VitalSignControlService.Vital" +
+      "SignsProblemResponseB;\n\032ds.VitalSignCont" +
+      "rolServiceB\033VitalSignControlServiceImplP" +
+      "\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
