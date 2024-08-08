@@ -1,16 +1,16 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "ds.VitalSignControlService";
+option java_package = "ds.VitalSignsControlService";
 option java_outer_classname = "VitalSignControlServiceImpl";
 
-package ds.VitalSignControlService;
+package ds.VitalSignsControlService;
 
-service VitalSignControlService {
-	rpc GetVitalSigns_do(GetVitalSignsRequest) returns (GetVitalSignsResponse);
+service VitalSignsControlService {
+	rpc GetVitalSignsLatest_do(GetVitalSignsRequest) returns (GetVitalSignsLatestResponse);
+	rpc GetVitalSignsHistory_do(GetVitalSignsRequest) returns (stream GetVitalSignsHistoryResponse);
 	rpc SetVitalSigns_do(stream SetVitalSignsRequest) returns (SetVitalSignsResponse);
 	rpc MonitorVitalSignsReading(stream VitalSignsMonitorRequest) returns (stream VitalSignsMonitorResponse);
-	rpc AlertStaffOfVitalSignsProblem(VitalSignsProblemRequest) returns (VitalSignsProblemResponse);
 }
 
 enum OperationalStatus {
@@ -24,20 +24,28 @@ message GetVitalSignsRequest{
 	int32 patientID = 1;
 }
 
-message GetVitalSignsResponse {
+message GetVitalSignsLatestResponse {
 	int32 patientID = 1;
-	double time = 2;
-	int32 heartRateBPM = 3;
-	double bodyTemp = 4;
-	int32 Spo2 = 5;
+	int32 heartRateBPM = 2;
+	double bodyTemp = 3;
+	int32 Spo2 = 4;
+	string time = 5;
+}
+
+message GetVitalSignsHistoryResponse {
+	int32 patientID = 1;
+	int32 heartRateBPM = 2;
+	double bodyTemp = 3;
+	int32 Spo2 = 4;
+	string time = 5;
 }
 
 message SetVitalSignsRequest {
 	int32 patientID = 1;
-	double time = 2;
-	int32 heartRateBPM = 3;
-	double bodyTemp = 4;
-	int32 Spo2 = 5;
+	int32 heartRateBPM = 2;
+	double bodyTemp = 3;
+	int32 Spo2 = 4;
+	string time = 5;
 }
 
 message SetVitalSignsResponse {
@@ -48,25 +56,14 @@ message SetVitalSignsResponse {
 
 message VitalSignsMonitorRequest {
 	int32 patientID = 1;
-	double time = 2;
-	int32 heartRateBPM = 3;
-	double bodyTemp = 4;
-	int32 Spo2 = 5;
+	int32 heartRateBPM = 2;
+	double bodyTemp = 3;
+	int32 Spo2 = 4;
+	string time = 5;
 }
 
 message VitalSignsMonitorResponse {
 	int32 patientID = 1;
-    OperationalStatus result = 2;
-    string statusMessage = 3;
-}
-
-message VitalSignsProblemRequest {
-    int32 patientID = 1;
-    string problemDescription = 2;
-}
-
-message VitalSignsProblemResponse {
-    int32 patientID = 1;
     OperationalStatus result = 2;
     string statusMessage = 3;
 }

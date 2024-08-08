@@ -1,4 +1,4 @@
-package ds.VitalSignControlService;
+package ds.VitalSignsControlService;
 
 public class Record {
  private int patientID;
@@ -55,6 +55,16 @@ public class Record {
 
  public void setTime(String time) {
      this.time = time;
+ }
+ // for history results
+ public String toString() {
+	 String returnable;
+	 returnable = "Patient ID: " + getPatientID() + ", "
+	    		+ "HeartRate: " + getHeartRateBPM() + "bpm, "
+	    		+ "Body Temperature: " + getBodyTemp() + "C, "
+	    		+ "Blood Oxygen: " + getSpo2() + "%, "
+	    		+ "Time: " + getTime();
+	 return returnable;
  }
 }
 
