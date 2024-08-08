@@ -4,8 +4,8 @@ option java_multiple_files = true;
 option java_package = "ds.SmartClimateControlService";
 option java_outer_classname = "SmartClimateControlServiceImpl";
 
-service SmartBedControlService {
-	rpc GetClimateReading(GetClimateRequest)  returns (GetClimateReadingResponse) {}
+service SmartClimateControlService {
+	rpc GetClimateReading_do(GetClimateReadingRequest)  returns (GetClimateReadingResponse) {}
 	rpc SetTemperature_do(SetTemperatureRequest) returns (SetTemperatureResponse) {}
 	rpc SetHumidity_do(SetHumidityRequest) returns (SetHumidityResponse) {}
 
@@ -18,7 +18,7 @@ enum OperationalStatus {
 	Error = 3;
 }
 
-message GetClimateRequest {
+message GetClimateReadingRequest {
 	int32 roomID = 1;
 }
 

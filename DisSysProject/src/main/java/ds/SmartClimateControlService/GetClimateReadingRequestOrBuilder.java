@@ -3,8 +3,8 @@
 
 package ds.SmartClimateControlService;
 
-public interface GetClimateRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:GetClimateRequest)
+public interface GetClimateReadingRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:GetClimateReadingRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**

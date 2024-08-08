@@ -20,49 +20,49 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.12.0)",
     comments = "Source: SmartClimateControl.proto")
-public final class SmartBedControlServiceGrpc {
+public final class SmartClimateControlServiceGrpc {
 
-  private SmartBedControlServiceGrpc() {}
+  private SmartClimateControlServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "SmartBedControlService";
+  public static final String SERVICE_NAME = "SmartClimateControlService";
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  @java.lang.Deprecated // Use {@link #getGetClimateReadingMethod()} instead. 
-  public static final io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateRequest,
-      ds.SmartClimateControlService.GetClimateReadingResponse> METHOD_GET_CLIMATE_READING = getGetClimateReadingMethodHelper();
+  @java.lang.Deprecated // Use {@link #getGetClimateReadingDoMethod()} instead. 
+  public static final io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateReadingRequest,
+      ds.SmartClimateControlService.GetClimateReadingResponse> METHOD_GET_CLIMATE_READING_DO = getGetClimateReadingDoMethodHelper();
 
-  private static volatile io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateRequest,
-      ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingMethod;
+  private static volatile io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateReadingRequest,
+      ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingDoMethod;
 
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateRequest,
-      ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingMethod() {
-    return getGetClimateReadingMethodHelper();
+  public static io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateReadingRequest,
+      ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingDoMethod() {
+    return getGetClimateReadingDoMethodHelper();
   }
 
-  private static io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateRequest,
-      ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingMethodHelper() {
-    io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateRequest, ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingMethod;
-    if ((getGetClimateReadingMethod = SmartBedControlServiceGrpc.getGetClimateReadingMethod) == null) {
-      synchronized (SmartBedControlServiceGrpc.class) {
-        if ((getGetClimateReadingMethod = SmartBedControlServiceGrpc.getGetClimateReadingMethod) == null) {
-          SmartBedControlServiceGrpc.getGetClimateReadingMethod = getGetClimateReadingMethod = 
-              io.grpc.MethodDescriptor.<ds.SmartClimateControlService.GetClimateRequest, ds.SmartClimateControlService.GetClimateReadingResponse>newBuilder()
+  private static io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateReadingRequest,
+      ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingDoMethodHelper() {
+    io.grpc.MethodDescriptor<ds.SmartClimateControlService.GetClimateReadingRequest, ds.SmartClimateControlService.GetClimateReadingResponse> getGetClimateReadingDoMethod;
+    if ((getGetClimateReadingDoMethod = SmartClimateControlServiceGrpc.getGetClimateReadingDoMethod) == null) {
+      synchronized (SmartClimateControlServiceGrpc.class) {
+        if ((getGetClimateReadingDoMethod = SmartClimateControlServiceGrpc.getGetClimateReadingDoMethod) == null) {
+          SmartClimateControlServiceGrpc.getGetClimateReadingDoMethod = getGetClimateReadingDoMethod = 
+              io.grpc.MethodDescriptor.<ds.SmartClimateControlService.GetClimateReadingRequest, ds.SmartClimateControlService.GetClimateReadingResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "SmartBedControlService", "GetClimateReading"))
+                  "SmartClimateControlService", "GetClimateReading_do"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  ds.SmartClimateControlService.GetClimateRequest.getDefaultInstance()))
+                  ds.SmartClimateControlService.GetClimateReadingRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.SmartClimateControlService.GetClimateReadingResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new SmartBedControlServiceMethodDescriptorSupplier("GetClimateReading"))
+                  .setSchemaDescriptor(new SmartClimateControlServiceMethodDescriptorSupplier("GetClimateReading_do"))
                   .build();
           }
         }
      }
-     return getGetClimateReadingMethod;
+     return getGetClimateReadingDoMethod;
   }
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getSetTemperatureDoMethod()} instead. 
@@ -81,20 +81,20 @@ public final class SmartBedControlServiceGrpc {
   private static io.grpc.MethodDescriptor<ds.SmartClimateControlService.SetTemperatureRequest,
       ds.SmartClimateControlService.SetTemperatureResponse> getSetTemperatureDoMethodHelper() {
     io.grpc.MethodDescriptor<ds.SmartClimateControlService.SetTemperatureRequest, ds.SmartClimateControlService.SetTemperatureResponse> getSetTemperatureDoMethod;
-    if ((getSetTemperatureDoMethod = SmartBedControlServiceGrpc.getSetTemperatureDoMethod) == null) {
-      synchronized (SmartBedControlServiceGrpc.class) {
-        if ((getSetTemperatureDoMethod = SmartBedControlServiceGrpc.getSetTemperatureDoMethod) == null) {
-          SmartBedControlServiceGrpc.getSetTemperatureDoMethod = getSetTemperatureDoMethod = 
+    if ((getSetTemperatureDoMethod = SmartClimateControlServiceGrpc.getSetTemperatureDoMethod) == null) {
+      synchronized (SmartClimateControlServiceGrpc.class) {
+        if ((getSetTemperatureDoMethod = SmartClimateControlServiceGrpc.getSetTemperatureDoMethod) == null) {
+          SmartClimateControlServiceGrpc.getSetTemperatureDoMethod = getSetTemperatureDoMethod = 
               io.grpc.MethodDescriptor.<ds.SmartClimateControlService.SetTemperatureRequest, ds.SmartClimateControlService.SetTemperatureResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "SmartBedControlService", "SetTemperature_do"))
+                  "SmartClimateControlService", "SetTemperature_do"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.SmartClimateControlService.SetTemperatureRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.SmartClimateControlService.SetTemperatureResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new SmartBedControlServiceMethodDescriptorSupplier("SetTemperature_do"))
+                  .setSchemaDescriptor(new SmartClimateControlServiceMethodDescriptorSupplier("SetTemperature_do"))
                   .build();
           }
         }
@@ -118,20 +118,20 @@ public final class SmartBedControlServiceGrpc {
   private static io.grpc.MethodDescriptor<ds.SmartClimateControlService.SetHumidityRequest,
       ds.SmartClimateControlService.SetHumidityResponse> getSetHumidityDoMethodHelper() {
     io.grpc.MethodDescriptor<ds.SmartClimateControlService.SetHumidityRequest, ds.SmartClimateControlService.SetHumidityResponse> getSetHumidityDoMethod;
-    if ((getSetHumidityDoMethod = SmartBedControlServiceGrpc.getSetHumidityDoMethod) == null) {
-      synchronized (SmartBedControlServiceGrpc.class) {
-        if ((getSetHumidityDoMethod = SmartBedControlServiceGrpc.getSetHumidityDoMethod) == null) {
-          SmartBedControlServiceGrpc.getSetHumidityDoMethod = getSetHumidityDoMethod = 
+    if ((getSetHumidityDoMethod = SmartClimateControlServiceGrpc.getSetHumidityDoMethod) == null) {
+      synchronized (SmartClimateControlServiceGrpc.class) {
+        if ((getSetHumidityDoMethod = SmartClimateControlServiceGrpc.getSetHumidityDoMethod) == null) {
+          SmartClimateControlServiceGrpc.getSetHumidityDoMethod = getSetHumidityDoMethod = 
               io.grpc.MethodDescriptor.<ds.SmartClimateControlService.SetHumidityRequest, ds.SmartClimateControlService.SetHumidityResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "SmartBedControlService", "SetHumidity_do"))
+                  "SmartClimateControlService", "SetHumidity_do"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.SmartClimateControlService.SetHumidityRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   ds.SmartClimateControlService.SetHumidityResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new SmartBedControlServiceMethodDescriptorSupplier("SetHumidity_do"))
+                  .setSchemaDescriptor(new SmartClimateControlServiceMethodDescriptorSupplier("SetHumidity_do"))
                   .build();
           }
         }
@@ -142,35 +142,35 @@ public final class SmartBedControlServiceGrpc {
   /**
    * Creates a new async stub that supports all call types for the service
    */
-  public static SmartBedControlServiceStub newStub(io.grpc.Channel channel) {
-    return new SmartBedControlServiceStub(channel);
+  public static SmartClimateControlServiceStub newStub(io.grpc.Channel channel) {
+    return new SmartClimateControlServiceStub(channel);
   }
 
   /**
    * Creates a new blocking-style stub that supports unary and streaming output calls on the service
    */
-  public static SmartBedControlServiceBlockingStub newBlockingStub(
+  public static SmartClimateControlServiceBlockingStub newBlockingStub(
       io.grpc.Channel channel) {
-    return new SmartBedControlServiceBlockingStub(channel);
+    return new SmartClimateControlServiceBlockingStub(channel);
   }
 
   /**
    * Creates a new ListenableFuture-style stub that supports unary calls on the service
    */
-  public static SmartBedControlServiceFutureStub newFutureStub(
+  public static SmartClimateControlServiceFutureStub newFutureStub(
       io.grpc.Channel channel) {
-    return new SmartBedControlServiceFutureStub(channel);
+    return new SmartClimateControlServiceFutureStub(channel);
   }
 
   /**
    */
-  public static abstract class SmartBedControlServiceImplBase implements io.grpc.BindableService {
+  public static abstract class SmartClimateControlServiceImplBase implements io.grpc.BindableService {
 
     /**
      */
-    public void getClimateReading(ds.SmartClimateControlService.GetClimateRequest request,
+    public void getClimateReadingDo(ds.SmartClimateControlService.GetClimateReadingRequest request,
         io.grpc.stub.StreamObserver<ds.SmartClimateControlService.GetClimateReadingResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetClimateReadingMethodHelper(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetClimateReadingDoMethodHelper(), responseObserver);
     }
 
     /**
@@ -190,12 +190,12 @@ public final class SmartBedControlServiceGrpc {
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetClimateReadingMethodHelper(),
+            getGetClimateReadingDoMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
-                ds.SmartClimateControlService.GetClimateRequest,
+                ds.SmartClimateControlService.GetClimateReadingRequest,
                 ds.SmartClimateControlService.GetClimateReadingResponse>(
-                  this, METHODID_GET_CLIMATE_READING)))
+                  this, METHODID_GET_CLIMATE_READING_DO)))
           .addMethod(
             getSetTemperatureDoMethodHelper(),
             asyncUnaryCall(
@@ -216,28 +216,28 @@ public final class SmartBedControlServiceGrpc {
 
   /**
    */
-  public static final class SmartBedControlServiceStub extends io.grpc.stub.AbstractStub<SmartBedControlServiceStub> {
-    private SmartBedControlServiceStub(io.grpc.Channel channel) {
+  public static final class SmartClimateControlServiceStub extends io.grpc.stub.AbstractStub<SmartClimateControlServiceStub> {
+    private SmartClimateControlServiceStub(io.grpc.Channel channel) {
       super(channel);
     }
 
-    private SmartBedControlServiceStub(io.grpc.Channel channel,
+    private SmartClimateControlServiceStub(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected SmartBedControlServiceStub build(io.grpc.Channel channel,
+    protected SmartClimateControlServiceStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
-      return new SmartBedControlServiceStub(channel, callOptions);
+      return new SmartClimateControlServiceStub(channel, callOptions);
     }
 
     /**
      */
-    public void getClimateReading(ds.SmartClimateControlService.GetClimateRequest request,
+    public void getClimateReadingDo(ds.SmartClimateControlService.GetClimateReadingRequest request,
         io.grpc.stub.StreamObserver<ds.SmartClimateControlService.GetClimateReadingResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetClimateReadingMethodHelper(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetClimateReadingDoMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -259,27 +259,27 @@ public final class SmartBedControlServiceGrpc {
 
   /**
    */
-  public static final class SmartBedControlServiceBlockingStub extends io.grpc.stub.AbstractStub<SmartBedControlServiceBlockingStub> {
-    private SmartBedControlServiceBlockingStub(io.grpc.Channel channel) {
+  public static final class SmartClimateControlServiceBlockingStub extends io.grpc.stub.AbstractStub<SmartClimateControlServiceBlockingStub> {
+    private SmartClimateControlServiceBlockingStub(io.grpc.Channel channel) {
       super(channel);
     }
 
-    private SmartBedControlServiceBlockingStub(io.grpc.Channel channel,
+    private SmartClimateControlServiceBlockingStub(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected SmartBedControlServiceBlockingStub build(io.grpc.Channel channel,
+    protected SmartClimateControlServiceBlockingStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
-      return new SmartBedControlServiceBlockingStub(channel, callOptions);
+      return new SmartClimateControlServiceBlockingStub(channel, callOptions);
     }
 
     /**
      */
-    public ds.SmartClimateControlService.GetClimateReadingResponse getClimateReading(ds.SmartClimateControlService.GetClimateRequest request) {
+    public ds.SmartClimateControlService.GetClimateReadingResponse getClimateReadingDo(ds.SmartClimateControlService.GetClimateReadingRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetClimateReadingMethodHelper(), getCallOptions(), request);
+          getChannel(), getGetClimateReadingDoMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -299,28 +299,28 @@ public final class SmartBedControlServiceGrpc {
 
   /**
    */
-  public static final class SmartBedControlServiceFutureStub extends io.grpc.stub.AbstractStub<SmartBedControlServiceFutureStub> {
-    private SmartBedControlServiceFutureStub(io.grpc.Channel channel) {
+  public static final class SmartClimateControlServiceFutureStub extends io.grpc.stub.AbstractStub<SmartClimateControlServiceFutureStub> {
+    private SmartClimateControlServiceFutureStub(io.grpc.Channel channel) {
       super(channel);
     }
 
-    private SmartBedControlServiceFutureStub(io.grpc.Channel channel,
+    private SmartClimateControlServiceFutureStub(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected SmartBedControlServiceFutureStub build(io.grpc.Channel channel,
+    protected SmartClimateControlServiceFutureStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
-      return new SmartBedControlServiceFutureStub(channel, callOptions);
+      return new SmartClimateControlServiceFutureStub(channel, callOptions);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<ds.SmartClimateControlService.GetClimateReadingResponse> getClimateReading(
-        ds.SmartClimateControlService.GetClimateRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<ds.SmartClimateControlService.GetClimateReadingResponse> getClimateReadingDo(
+        ds.SmartClimateControlService.GetClimateReadingRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetClimateReadingMethodHelper(), getCallOptions()), request);
+          getChannel().newCall(getGetClimateReadingDoMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -340,7 +340,7 @@ public final class SmartBedControlServiceGrpc {
     }
   }
 
-  private static final int METHODID_GET_CLIMATE_READING = 0;
+  private static final int METHODID_GET_CLIMATE_READING_DO = 0;
   private static final int METHODID_SET_TEMPERATURE_DO = 1;
   private static final int METHODID_SET_HUMIDITY_DO = 2;
 
@@ -349,10 +349,10 @@ public final class SmartBedControlServiceGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final SmartBedControlServiceImplBase serviceImpl;
+    private final SmartClimateControlServiceImplBase serviceImpl;
     private final int methodId;
 
-    MethodHandlers(SmartBedControlServiceImplBase serviceImpl, int methodId) {
+    MethodHandlers(SmartClimateControlServiceImplBase serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -361,8 +361,8 @@ public final class SmartBedControlServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_CLIMATE_READING:
-          serviceImpl.getClimateReading((ds.SmartClimateControlService.GetClimateRequest) request,
+        case METHODID_GET_CLIMATE_READING_DO:
+          serviceImpl.getClimateReadingDo((ds.SmartClimateControlService.GetClimateReadingRequest) request,
               (io.grpc.stub.StreamObserver<ds.SmartClimateControlService.GetClimateReadingResponse>) responseObserver);
           break;
         case METHODID_SET_TEMPERATURE_DO:
@@ -389,9 +389,9 @@ public final class SmartBedControlServiceGrpc {
     }
   }
 
-  private static abstract class SmartBedControlServiceBaseDescriptorSupplier
+  private static abstract class SmartClimateControlServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
-    SmartBedControlServiceBaseDescriptorSupplier() {}
+    SmartClimateControlServiceBaseDescriptorSupplier() {}
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
@@ -400,21 +400,21 @@ public final class SmartBedControlServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
-      return getFileDescriptor().findServiceByName("SmartBedControlService");
+      return getFileDescriptor().findServiceByName("SmartClimateControlService");
     }
   }
 
-  private static final class SmartBedControlServiceFileDescriptorSupplier
-      extends SmartBedControlServiceBaseDescriptorSupplier {
-    SmartBedControlServiceFileDescriptorSupplier() {}
+  private static final class SmartClimateControlServiceFileDescriptorSupplier
+      extends SmartClimateControlServiceBaseDescriptorSupplier {
+    SmartClimateControlServiceFileDescriptorSupplier() {}
   }
 
-  private static final class SmartBedControlServiceMethodDescriptorSupplier
-      extends SmartBedControlServiceBaseDescriptorSupplier
+  private static final class SmartClimateControlServiceMethodDescriptorSupplier
+      extends SmartClimateControlServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
     private final String methodName;
 
-    SmartBedControlServiceMethodDescriptorSupplier(String methodName) {
+    SmartClimateControlServiceMethodDescriptorSupplier(String methodName) {
       this.methodName = methodName;
     }
 
@@ -429,12 +429,12 @@ public final class SmartBedControlServiceGrpc {
   public static io.grpc.ServiceDescriptor getServiceDescriptor() {
     io.grpc.ServiceDescriptor result = serviceDescriptor;
     if (result == null) {
-      synchronized (SmartBedControlServiceGrpc.class) {
+      synchronized (SmartClimateControlServiceGrpc.class) {
         result = serviceDescriptor;
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
-              .setSchemaDescriptor(new SmartBedControlServiceFileDescriptorSupplier())
-              .addMethod(getGetClimateReadingMethodHelper())
+              .setSchemaDescriptor(new SmartClimateControlServiceFileDescriptorSupplier())
+              .addMethod(getGetClimateReadingDoMethodHelper())
               .addMethod(getSetTemperatureDoMethodHelper())
               .addMethod(getSetHumidityDoMethodHelper())
               .build();

@@ -4,18 +4,18 @@
 package ds.SmartClimateControlService;
 
 /**
- * Protobuf type {@code GetClimateRequest}
+ * Protobuf type {@code GetClimateReadingRequest}
  */
-public  final class GetClimateRequest extends
+public  final class GetClimateReadingRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:GetClimateRequest)
-    GetClimateRequestOrBuilder {
+    // @@protoc_insertion_point(message_implements:GetClimateReadingRequest)
+    GetClimateReadingRequestOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use GetClimateRequest.newBuilder() to construct.
-  private GetClimateRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use GetClimateReadingRequest.newBuilder() to construct.
+  private GetClimateReadingRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private GetClimateRequest() {
+  private GetClimateReadingRequest() {
     roomID_ = 0;
   }
 
@@ -24,7 +24,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private GetClimateRequest(
+  private GetClimateReadingRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -69,15 +69,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateRequest_descriptor;
+    return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateReadingRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateRequest_fieldAccessorTable
+    return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateReadingRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            ds.SmartClimateControlService.GetClimateRequest.class, ds.SmartClimateControlService.GetClimateRequest.Builder.class);
+            ds.SmartClimateControlService.GetClimateReadingRequest.class, ds.SmartClimateControlService.GetClimateReadingRequest.Builder.class);
   }
 
   public static final int ROOMID_FIELD_NUMBER = 1;
@@ -129,10 +129,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof ds.SmartClimateControlService.GetClimateRequest)) {
+    if (!(obj instanceof ds.SmartClimateControlService.GetClimateReadingRequest)) {
       return super.equals(obj);
     }
-    ds.SmartClimateControlService.GetClimateRequest other = (ds.SmartClimateControlService.GetClimateRequest) obj;
+    ds.SmartClimateControlService.GetClimateReadingRequest other = (ds.SmartClimateControlService.GetClimateReadingRequest) obj;
 
     boolean result = true;
     result = result && (getRoomID()
@@ -155,69 +155,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(byte[] data)
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(java.io.InputStream input)
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseDelimitedFrom(java.io.InputStream input)
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseDelimitedFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static ds.SmartClimateControlService.GetClimateRequest parseFrom(
+  public static ds.SmartClimateControlService.GetClimateReadingRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -230,7 +230,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(ds.SmartClimateControlService.GetClimateRequest prototype) {
+  public static Builder newBuilder(ds.SmartClimateControlService.GetClimateReadingRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -246,26 +246,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code GetClimateRequest}
+   * Protobuf type {@code GetClimateReadingRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:GetClimateRequest)
-      ds.SmartClimateControlService.GetClimateRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:GetClimateReadingRequest)
+      ds.SmartClimateControlService.GetClimateReadingRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateRequest_descriptor;
+      return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateReadingRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateRequest_fieldAccessorTable
+      return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateReadingRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              ds.SmartClimateControlService.GetClimateRequest.class, ds.SmartClimateControlService.GetClimateRequest.Builder.class);
+              ds.SmartClimateControlService.GetClimateReadingRequest.class, ds.SmartClimateControlService.GetClimateReadingRequest.Builder.class);
     }
 
-    // Construct using ds.SmartClimateControlService.GetClimateRequest.newBuilder()
+    // Construct using ds.SmartClimateControlService.GetClimateReadingRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -291,17 +291,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateRequest_descriptor;
+      return ds.SmartClimateControlService.SmartClimateControlServiceImpl.internal_static_GetClimateReadingRequest_descriptor;
     }
 
     @java.lang.Override
-    public ds.SmartClimateControlService.GetClimateRequest getDefaultInstanceForType() {
-      return ds.SmartClimateControlService.GetClimateRequest.getDefaultInstance();
+    public ds.SmartClimateControlService.GetClimateReadingRequest getDefaultInstanceForType() {
+      return ds.SmartClimateControlService.GetClimateReadingRequest.getDefaultInstance();
     }
 
     @java.lang.Override
-    public ds.SmartClimateControlService.GetClimateRequest build() {
-      ds.SmartClimateControlService.GetClimateRequest result = buildPartial();
+    public ds.SmartClimateControlService.GetClimateReadingRequest build() {
+      ds.SmartClimateControlService.GetClimateReadingRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -309,8 +309,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public ds.SmartClimateControlService.GetClimateRequest buildPartial() {
-      ds.SmartClimateControlService.GetClimateRequest result = new ds.SmartClimateControlService.GetClimateRequest(this);
+    public ds.SmartClimateControlService.GetClimateReadingRequest buildPartial() {
+      ds.SmartClimateControlService.GetClimateReadingRequest result = new ds.SmartClimateControlService.GetClimateReadingRequest(this);
       result.roomID_ = roomID_;
       onBuilt();
       return result;
@@ -350,16 +350,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof ds.SmartClimateControlService.GetClimateRequest) {
-        return mergeFrom((ds.SmartClimateControlService.GetClimateRequest)other);
+      if (other instanceof ds.SmartClimateControlService.GetClimateReadingRequest) {
+        return mergeFrom((ds.SmartClimateControlService.GetClimateReadingRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(ds.SmartClimateControlService.GetClimateRequest other) {
-      if (other == ds.SmartClimateControlService.GetClimateRequest.getDefaultInstance()) return this;
+    public Builder mergeFrom(ds.SmartClimateControlService.GetClimateReadingRequest other) {
+      if (other == ds.SmartClimateControlService.GetClimateReadingRequest.getDefaultInstance()) return this;
       if (other.getRoomID() != 0) {
         setRoomID(other.getRoomID());
       }
@@ -378,11 +378,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      ds.SmartClimateControlService.GetClimateRequest parsedMessage = null;
+      ds.SmartClimateControlService.GetClimateReadingRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (ds.SmartClimateControlService.GetClimateRequest) e.getUnfinishedMessage();
+        parsedMessage = (ds.SmartClimateControlService.GetClimateReadingRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -430,41 +430,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:GetClimateRequest)
+    // @@protoc_insertion_point(builder_scope:GetClimateReadingRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:GetClimateRequest)
-  private static final ds.SmartClimateControlService.GetClimateRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:GetClimateReadingRequest)
+  private static final ds.SmartClimateControlService.GetClimateReadingRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new ds.SmartClimateControlService.GetClimateRequest();
+    DEFAULT_INSTANCE = new ds.SmartClimateControlService.GetClimateReadingRequest();
   }
 
-  public static ds.SmartClimateControlService.GetClimateRequest getDefaultInstance() {
+  public static ds.SmartClimateControlService.GetClimateReadingRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<GetClimateRequest>
-      PARSER = new com.google.protobuf.AbstractParser<GetClimateRequest>() {
+  private static final com.google.protobuf.Parser<GetClimateReadingRequest>
+      PARSER = new com.google.protobuf.AbstractParser<GetClimateReadingRequest>() {
     @java.lang.Override
-    public GetClimateRequest parsePartialFrom(
+    public GetClimateReadingRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new GetClimateRequest(input, extensionRegistry);
+      return new GetClimateReadingRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<GetClimateRequest> parser() {
+  public static com.google.protobuf.Parser<GetClimateReadingRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<GetClimateRequest> getParserForType() {
+  public com.google.protobuf.Parser<GetClimateReadingRequest> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public ds.SmartClimateControlService.GetClimateRequest getDefaultInstanceForType() {
+  public ds.SmartClimateControlService.GetClimateReadingRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

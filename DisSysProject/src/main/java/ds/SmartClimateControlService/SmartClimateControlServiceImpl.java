@@ -15,10 +15,10 @@ public final class SmartClimateControlServiceImpl {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetClimateRequest_descriptor;
+    internal_static_GetClimateReadingRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetClimateRequest_fieldAccessorTable;
+      internal_static_GetClimateReadingRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetClimateReadingResponse_descriptor;
   static final 
@@ -53,28 +53,28 @@ public final class SmartClimateControlServiceImpl {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\031SmartClimateControl.proto\"#\n\021GetClimat" +
-      "eRequest\022\016\n\006roomID\030\001 \001(\005\"R\n\031GetClimateRe" +
-      "adingResponse\022\016\n\006roomID\030\001 \001(\005\022\023\n\013tempera" +
-      "ture\030\002 \001(\002\022\020\n\010humidity\030\003 \001(\002\",\n\025SetTempe" +
-      "ratureRequest\022\023\n\013temperature\030\001 \001(\002\"x\n\026Se" +
-      "tTemperatureResponse\022\016\n\006roomID\030\001 \001(\005\022\023\n\013" +
-      "temperature\030\002 \001(\002\022\"\n\006result\030\003 \001(\0162\022.Oper" +
-      "ationalStatus\022\025\n\rstatusMessage\030\004 \001(\t\"&\n\022" +
-      "SetHumidityRequest\022\020\n\010humidity\030\001 \001(\002\"r\n\023" +
-      "SetHumidityResponse\022\016\n\006roomID\030\001 \001(\005\022\020\n\010h" +
-      "umidity\030\002 \001(\002\022\"\n\006result\030\003 \001(\0162\022.Operatio" +
-      "nalStatus\022\025\n\rstatusMessage\030\004 \001(\t*G\n\021Oper" +
-      "ationalStatus\022\r\n\tUndefined\020\000\022\013\n\007Success\020" +
-      "\001\022\013\n\007Failure\020\002\022\t\n\005Error\020\0032\346\001\n\026SmartBedCo" +
-      "ntrolService\022E\n\021GetClimateReading\022\022.GetC" +
-      "limateRequest\032\032.GetClimateReadingRespons" +
-      "e\"\000\022F\n\021SetTemperature_do\022\026.SetTemperatur" +
-      "eRequest\032\027.SetTemperatureResponse\"\000\022=\n\016S" +
-      "etHumidity_do\022\023.SetHumidityRequest\032\024.Set" +
-      "HumidityResponse\"\000BA\n\035ds.SmartClimateCon" +
-      "trolServiceB\036SmartClimateControlServiceI" +
-      "mplP\001b\006proto3"
+      "\n\031SmartClimateControl.proto\"*\n\030GetClimat" +
+      "eReadingRequest\022\016\n\006roomID\030\001 \001(\005\"R\n\031GetCl" +
+      "imateReadingResponse\022\016\n\006roomID\030\001 \001(\005\022\023\n\013" +
+      "temperature\030\002 \001(\002\022\020\n\010humidity\030\003 \001(\002\",\n\025S" +
+      "etTemperatureRequest\022\023\n\013temperature\030\001 \001(" +
+      "\002\"x\n\026SetTemperatureResponse\022\016\n\006roomID\030\001 " +
+      "\001(\005\022\023\n\013temperature\030\002 \001(\002\022\"\n\006result\030\003 \001(\016" +
+      "2\022.OperationalStatus\022\025\n\rstatusMessage\030\004 " +
+      "\001(\t\"&\n\022SetHumidityRequest\022\020\n\010humidity\030\001 " +
+      "\001(\002\"r\n\023SetHumidityResponse\022\016\n\006roomID\030\001 \001" +
+      "(\005\022\020\n\010humidity\030\002 \001(\002\022\"\n\006result\030\003 \001(\0162\022.O" +
+      "perationalStatus\022\025\n\rstatusMessage\030\004 \001(\t*" +
+      "G\n\021OperationalStatus\022\r\n\tUndefined\020\000\022\013\n\007S" +
+      "uccess\020\001\022\013\n\007Failure\020\002\022\t\n\005Error\020\0032\364\001\n\032Sma" +
+      "rtClimateControlService\022O\n\024GetClimateRea" +
+      "ding_do\022\031.GetClimateReadingRequest\032\032.Get" +
+      "ClimateReadingResponse\"\000\022F\n\021SetTemperatu" +
+      "re_do\022\026.SetTemperatureRequest\032\027.SetTempe" +
+      "ratureResponse\"\000\022=\n\016SetHumidity_do\022\023.Set" +
+      "HumidityRequest\032\024.SetHumidityResponse\"\000B" +
+      "A\n\035ds.SmartClimateControlServiceB\036SmartC" +
+      "limateControlServiceImplP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -88,11 +88,11 @@ public final class SmartClimateControlServiceImpl {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_GetClimateRequest_descriptor =
+    internal_static_GetClimateReadingRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_GetClimateRequest_fieldAccessorTable = new
+    internal_static_GetClimateReadingRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetClimateRequest_descriptor,
+        internal_static_GetClimateReadingRequest_descriptor,
         new java.lang.String[] { "RoomID", });
     internal_static_GetClimateReadingResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);

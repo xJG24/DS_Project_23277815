@@ -36,7 +36,7 @@ public class SmartBedControlService extends SmartBedControlServiceImplBase{
 		server.awaitTermination();
 	}
 
-
+	// no error handling yet
 	@Override
 	public void getBedPositionDo(Empty request, StreamObserver<GetBedPositionResponse> responseObserver) {
 	    
@@ -49,4 +49,56 @@ public class SmartBedControlService extends SmartBedControlServiceImplBase{
 	    responseObserver.onNext(response);
 	    responseObserver.onCompleted();
 	}
+
+	// no error handling yet
+	// maybe a try catch block + a validation method? 
+	@Override
+	public void setBedHeadPositionDo(SetBedHeadPositionRequest request, StreamObserver<SetBedHeadPositionResponse> responseObserver) {
+		bedHeadPosition = request.getBedHeadPosition();
+		
+		SetBedHeadPositionResponse response = SetBedHeadPositionResponse.newBuilder()
+				.setBedHeadPosition(request.getBedHeadPosition())
+				.setResult(OperationalStatus.Success)
+	            .setStatusMessage("Head position adjusted successfully.")
+				.build();
+		
+		responseObserver.onNext(response);
+	    responseObserver.onCompleted();
+	}
+	
+	// no error handling yet
+	// maybe a try catch block + a validation method? 
+	@Override
+	public void setBedFootPositionDo(SetBedFootPositionRequest request, StreamObserver<SetBedFootPositionResponse> responseObserver) {
+		
+		bedFootPosition = request.getBedFootPosition();
+		
+		SetBedFootPositionResponse response = SetBedFootPositionResponse.newBuilder()
+				.setBedFootPosition(request.getBedFootPosition())
+				.setResult(OperationalStatus.Success)
+	            .setStatusMessage("Foot position adjusted successfully.")
+				.build();
+		
+		responseObserver.onNext(response);
+	    responseObserver.onCompleted();
+	}
+	
+	// no error handling yet
+	// maybe a try catch block + a validation method? 
+	@Override
+	public void resetBedPositionDo(Empty request, StreamObserver<ResetBedPositionResponse> responseObserver) {
+		bedHeadPosition = 0.0F;
+		bedFootPosition = 0.0F;
+		
+		ResetBedPositionResponse response = ResetBedPositionResponse.newBuilder()
+				.setBedHeadPosition(0.0F)
+				.setBedFootPosition(0.0F)
+				.setResult(OperationalStatus.Success)
+	            .setStatusMessage("Bed position reset successfully.")
+				.build();
+		
+		responseObserver.onNext(response);
+	    responseObserver.onCompleted();
+	}
+	
 }
