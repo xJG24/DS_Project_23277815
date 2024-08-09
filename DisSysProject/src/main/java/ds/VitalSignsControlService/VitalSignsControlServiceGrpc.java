@@ -123,7 +123,7 @@ public final class VitalSignsControlServiceGrpc {
         if ((getSetVitalSignsDoMethod = VitalSignsControlServiceGrpc.getSetVitalSignsDoMethod) == null) {
           VitalSignsControlServiceGrpc.getSetVitalSignsDoMethod = getSetVitalSignsDoMethod = 
               io.grpc.MethodDescriptor.<ds.VitalSignsControlService.SetVitalSignsRequest, ds.VitalSignsControlService.SetVitalSignsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "ds.VitalSignsControlService.VitalSignsControlService", "SetVitalSigns_do"))
               .setSampledToLocalTracing(true)
@@ -219,9 +219,9 @@ public final class VitalSignsControlServiceGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<ds.VitalSignsControlService.SetVitalSignsRequest> setVitalSignsDo(
+    public void setVitalSignsDo(ds.VitalSignsControlService.SetVitalSignsRequest request,
         io.grpc.stub.StreamObserver<ds.VitalSignsControlService.SetVitalSignsResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(getSetVitalSignsDoMethodHelper(), responseObserver);
+      asyncUnimplementedUnaryCall(getSetVitalSignsDoMethodHelper(), responseObserver);
     }
 
     /**
@@ -249,7 +249,7 @@ public final class VitalSignsControlServiceGrpc {
                   this, METHODID_GET_VITAL_SIGNS_HISTORY_DO)))
           .addMethod(
             getSetVitalSignsDoMethodHelper(),
-            asyncClientStreamingCall(
+            asyncUnaryCall(
               new MethodHandlers<
                 ds.VitalSignsControlService.SetVitalSignsRequest,
                 ds.VitalSignsControlService.SetVitalSignsResponse>(
@@ -301,10 +301,10 @@ public final class VitalSignsControlServiceGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<ds.VitalSignsControlService.SetVitalSignsRequest> setVitalSignsDo(
+    public void setVitalSignsDo(ds.VitalSignsControlService.SetVitalSignsRequest request,
         io.grpc.stub.StreamObserver<ds.VitalSignsControlService.SetVitalSignsResponse> responseObserver) {
-      return asyncClientStreamingCall(
-          getChannel().newCall(getSetVitalSignsDoMethodHelper(), getCallOptions()), responseObserver);
+      asyncUnaryCall(
+          getChannel().newCall(getSetVitalSignsDoMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -348,6 +348,13 @@ public final class VitalSignsControlServiceGrpc {
       return blockingServerStreamingCall(
           getChannel(), getGetVitalSignsHistoryDoMethodHelper(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public ds.VitalSignsControlService.SetVitalSignsResponse setVitalSignsDo(ds.VitalSignsControlService.SetVitalSignsRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getSetVitalSignsDoMethodHelper(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -374,6 +381,14 @@ public final class VitalSignsControlServiceGrpc {
         ds.VitalSignsControlService.GetVitalSignsRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getGetVitalSignsLatestDoMethodHelper(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<ds.VitalSignsControlService.SetVitalSignsResponse> setVitalSignsDo(
+        ds.VitalSignsControlService.SetVitalSignsRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getSetVitalSignsDoMethodHelper(), getCallOptions()), request);
     }
   }
 
@@ -407,6 +422,10 @@ public final class VitalSignsControlServiceGrpc {
           serviceImpl.getVitalSignsHistoryDo((ds.VitalSignsControlService.GetVitalSignsRequest) request,
               (io.grpc.stub.StreamObserver<ds.VitalSignsControlService.GetVitalSignsHistoryResponse>) responseObserver);
           break;
+        case METHODID_SET_VITAL_SIGNS_DO:
+          serviceImpl.setVitalSignsDo((ds.VitalSignsControlService.SetVitalSignsRequest) request,
+              (io.grpc.stub.StreamObserver<ds.VitalSignsControlService.SetVitalSignsResponse>) responseObserver);
+          break;
         default:
           throw new AssertionError();
       }
@@ -417,9 +436,6 @@ public final class VitalSignsControlServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_SET_VITAL_SIGNS_DO:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.setVitalSignsDo(
-              (io.grpc.stub.StreamObserver<ds.VitalSignsControlService.SetVitalSignsResponse>) responseObserver);
         case METHODID_MONITOR_VITAL_SIGNS_READING:
           return (io.grpc.stub.StreamObserver<Req>) serviceImpl.monitorVitalSignsReading(
               (io.grpc.stub.StreamObserver<ds.VitalSignsControlService.VitalSignsMonitorResponse>) responseObserver);

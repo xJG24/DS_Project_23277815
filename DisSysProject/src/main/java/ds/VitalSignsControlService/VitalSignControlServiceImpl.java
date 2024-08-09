@@ -80,7 +80,7 @@ public final class VitalSignControlServiceImpl {
       "ds.VitalSignsControlService.OperationalS" +
       "tatus\022\025\n\rstatusMessage\030\003 \001(\t*G\n\021Operatio" +
       "nalStatus\022\r\n\tUndefined\020\000\022\013\n\007Success\020\001\022\013\n" +
-      "\007Failure\020\002\022\t\n\005Error\020\0032\273\004\n\030VitalSignsCont" +
+      "\007Failure\020\002\022\t\n\005Error\020\0032\271\004\n\030VitalSignsCont" +
       "rolService\022\205\001\n\026GetVitalSignsLatest_do\0221." +
       "ds.VitalSignsControlService.GetVitalSign" +
       "sRequest\0328.ds.VitalSignsControlService.G" +
@@ -88,15 +88,15 @@ public final class VitalSignControlServiceImpl {
       "ignsHistory_do\0221.ds.VitalSignsControlSer" +
       "vice.GetVitalSignsRequest\0329.ds.VitalSign" +
       "sControlService.GetVitalSignsHistoryResp" +
-      "onse0\001\022{\n\020SetVitalSigns_do\0221.ds.VitalSig" +
+      "onse0\001\022y\n\020SetVitalSigns_do\0221.ds.VitalSig" +
       "nsControlService.SetVitalSignsRequest\0322." +
       "ds.VitalSignsControlService.SetVitalSign" +
-      "sResponse(\001\022\215\001\n\030MonitorVitalSignsReading" +
-      "\0225.ds.VitalSignsControlService.VitalSign" +
-      "sMonitorRequest\0326.ds.VitalSignsControlSe" +
-      "rvice.VitalSignsMonitorResponse(\0010\001B<\n\033d" +
-      "s.VitalSignsControlServiceB\033VitalSignCon" +
-      "trolServiceImplP\001b\006proto3"
+      "sResponse\022\215\001\n\030MonitorVitalSignsReading\0225" +
+      ".ds.VitalSignsControlService.VitalSignsM" +
+      "onitorRequest\0326.ds.VitalSignsControlServ" +
+      "ice.VitalSignsMonitorResponse(\0010\001B<\n\033ds." +
+      "VitalSignsControlServiceB\033VitalSignContr" +
+      "olServiceImplP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

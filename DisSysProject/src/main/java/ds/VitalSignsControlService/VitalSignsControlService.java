@@ -25,8 +25,9 @@ import java.util.Scanner;
 
 import com.google.type.DateTime;
 
-import java.io.*;
+import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 
+import java.io.*;
 
 public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 	
@@ -63,6 +64,7 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 	    responseObserver.onCompleted();
 	}
 	
+	// Server streaming method
 	@Override
 	public void getVitalSignsHistoryDo(GetVitalSignsRequest request, StreamObserver<GetVitalSignsHistoryResponse> responseObserver) {
 		int patientID = request.getPatientID();
@@ -71,7 +73,7 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 		try (Scanner scanner = new Scanner(filePath)) {
 	        while (scanner.hasNextLine()) {
 	            String currentEntry = scanner.nextLine().trim();
-	            Record record = compileRecordFromFile(currentEntry);
+	            Record record = compileRecordFromString(currentEntry);
 	            
 	            // if record matches given PatientID and is not null compile response message
 	            if (record != null && record.getPatientID() == patientID) {
@@ -94,8 +96,99 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 		}
 	}
 	
-	public static void setVitalSignsDo(SetVitalSignsRequest request, StreamObserver<SetVitalSignsResponse> responseObserver) {
+	
+	@Override
+	public void setVitalSignsDo(SetVitalSignsRequest request, 
+			StreamObserver<SetVitalSignsResponse> responseObserver) {
+		Record toAppend = new Record(request.getPatientID(),request.getHeartRateBPM(),
+				request.getBodyTemp(),request.getSpo2(),request.getTime());
+		String filePath = "src/main/resources/vitals.txt";
+		//write record to file
+		appendRecordToFile(filePath, toAppend);
+		// check string has been added 
+		Record lastMatchingRecord = readLastMatchingEntry(filePath, toAppend.getPatientID());
+		if(lastMatchingRecord.equals(toAppend)) {
+			// compose success response
+			SetVitalSignsResponse response = SetVitalSignsResponse.newBuilder()
+					.setPatientID(lastMatchingRecord.getPatientID())
+					.setResult(OperationalStatus.Success)
+					.setStatusMessage("Vital Signs Updated Successfully")
+					.build();
+					
+			responseObserver.onNext(response);
+		    responseObserver.onCompleted();
+			} else {
+				// compose failure response
+				SetVitalSignsResponse response = SetVitalSignsResponse.newBuilder()
+						.setPatientID(lastMatchingRecord.getPatientID())
+						.setResult(OperationalStatus.Failure)
+						.setStatusMessage("Vital Signs Update Failed, please try again")
+						.build();
+			}
+		}
+	
+	
+	/*
+	 * public io.grpc.stub.StreamObserver<ds.VitalSignsControlService.VitalSignsMonitorRequest> monitorVitalSignsReading(
+        io.grpc.stub.StreamObserver<ds.VitalSignsControlService.VitalSignsMonitorResponse> responseObserver) {
+      return asyncUnimplementedStreamingCall(getMonitorVitalSignsReadingMethodHelper(), responseObserver);
+    }
+	 * 
+	 * */
+	@Override
+	public StreamObserver<VitalSignsMonitorRequest> monitorVitalSignsReading(
+		    StreamObserver<VitalSignsMonitorResponse> responseObserver) {
 		
+				return new StreamObserver<VitalSignsMonitorRequest>() {
+					
+					public void onNext(VitalSignsMonitorRequest request) {
+						// build record to validate against
+						Record record = new Record(request.getPatientID(),request.getHeartRateBPM(),
+								request.getBodyTemp(),request.getSpo2(),request.getTime());
+						
+						// validate the vitals are in range
+						String message = validateSafeRange(record);
+						String isSafeRangeMessage = "Vitals are in a safe range";
+						
+						if(!message.equals(isSafeRangeMessage)) {
+							
+							//build is unsafe response
+							VitalSignsMonitorResponse response = VitalSignsMonitorResponse.newBuilder()
+									.setPatientID(record.getPatientID())
+									.setResult(OperationalStatus.Error)
+									.setStatusMessage("Error: "  + message)
+									.build();
+							responseObserver.onNext(response);
+						} else {
+							//build is safe response
+							VitalSignsMonitorResponse response = VitalSignsMonitorResponse.newBuilder()
+									.setPatientID(record.getPatientID())
+									.setResult(OperationalStatus.Success)
+									.setStatusMessage("Success: " + message)
+									.build();
+							responseObserver.onNext(response);
+						}						
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						t.printStackTrace();
+						VitalSignsMonitorResponse response = VitalSignsMonitorResponse.newBuilder()
+								.setPatientID(0)
+								.setResult(OperationalStatus.Error)
+								.setStatusMessage("Operational Error")
+								.build();
+						responseObserver.onNext(response);
+						responseObserver.onCompleted();
+						
+					}
+
+					@Override
+					public void onCompleted() {
+						responseObserver.onCompleted();
+						
+					}
+				};
 	}
 
 
@@ -107,7 +200,7 @@ private static Record readLastMatchingEntry(String file, int patientID) {
     try (Scanner scanner = new Scanner(filePath)) {
         while (scanner.hasNextLine()) {
             String currentEntry = scanner.nextLine().trim();
-            Record currentEntryRecord = compileRecordFromFile(currentEntry);
+            Record currentEntryRecord = compileRecordFromString(currentEntry);
             if (currentEntryRecord != null && currentEntryRecord.getPatientID() == patientID) {
                 lastEntryRecord = currentEntryRecord;
             }
@@ -118,6 +211,7 @@ private static Record readLastMatchingEntry(String file, int patientID) {
     return lastEntryRecord;
 }
 
+//method which takes a record and turns it into a formatted string then appends to list
 private static void appendRecordToFile(String file, Record record) {
     String newRecord = "\n" 
     		+ record.getPatientID() + ", "
@@ -136,7 +230,7 @@ private static void appendRecordToFile(String file, Record record) {
 
 
 // robust record compiler, which ensures that if anomalous data has been recorded it is not returned 
-private static Record compileRecordFromFile(String record) throws NumberFormatException {
+private static Record compileRecordFromString(String record) throws NumberFormatException {
 	String[] fields = record.split(",");
 	
 	int newID;
@@ -180,5 +274,25 @@ private static Record compileRecordFromFile(String record) throws NumberFormatEx
 	}
 	Record newRecord = new Record(newID, newHeartRate, newBodyTemp,newSpo2,newTime);
 	return newRecord;
+	}
+
+	//method to monitor vitals as safe
+	private static String validateSafeRange(Record record) {
+		String isSafeRangeMessage = "Vitals are in a safe range";
+		String isUnsafeRangeMessage = "";
+		if(record.getHeartRateBPM() < 60 || record.getHeartRateBPM() > 110) {
+			isUnsafeRangeMessage += "Heart Rate is out of safe range: " + record.getHeartRateBPM() + "bpm\n";
+		}
+		if(record.getBodyTemp() < 36.5 || record.getBodyTemp() > 37.5){
+			isUnsafeRangeMessage += "Body temperature is out of safe range: " + record.getBodyTemp() + "C\n";
+		}
+		if(record.getSpo2() < 90 || record.getSpo2() > 100) {
+			isUnsafeRangeMessage += "Blood Oxygen is out of safe range: " + record.getSpo2() + "%\n";
+		}
+		if(isUnsafeRangeMessage.isBlank()) {
+			return isSafeRangeMessage;
+		} else {
+			return isUnsafeRangeMessage;
+		}
 	}
 }

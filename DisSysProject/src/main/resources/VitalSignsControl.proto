@@ -9,7 +9,7 @@ package ds.VitalSignsControlService;
 service VitalSignsControlService {
 	rpc GetVitalSignsLatest_do(GetVitalSignsRequest) returns (GetVitalSignsLatestResponse);
 	rpc GetVitalSignsHistory_do(GetVitalSignsRequest) returns (stream GetVitalSignsHistoryResponse);
-	rpc SetVitalSigns_do(stream SetVitalSignsRequest) returns (SetVitalSignsResponse);
+	rpc SetVitalSigns_do(SetVitalSignsRequest) returns (SetVitalSignsResponse);
 	rpc MonitorVitalSignsReading(stream VitalSignsMonitorRequest) returns (stream VitalSignsMonitorResponse);
 }
 

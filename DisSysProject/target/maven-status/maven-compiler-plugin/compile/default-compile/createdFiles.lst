@@ -27,7 +27,6 @@ ds\TestingService\TestResponse.class
 ds\TestingService\TestingServiceGrpc$TestingServiceFutureStub.class
 ds\VitalSignsControlService\VitalSignsMonitorResponseOrBuilder.class
 ds\SmartBedControlService\SmartBedControlServiceImpl.class
-ds\VitalSignsControlService\VitalSignsControlService.class
 ds\SmartBedControlService\GetBedPositionResponse$1.class
 ds\SmartClimateControlService\GetClimateReadingResponse.class
 ds\SmartBedControlService\Empty$1.class
@@ -113,7 +112,6 @@ ds\VitalSignsControlService\VitalSignControlServiceImpl.class
 ds\VitalSignsControlService\VitalSignControlServiceImpl$1.class
 testingService\TestingServiceImpl$1.class
 ds\SmartClimateControlService\SmartClimateControlServiceImpl$1.class
-ds\VitalSignsControlService\Record.class
 ds\SmartClimateControlService\SetTemperatureRequest$Builder.class
 ds\SmartClimateControlService\GetClimateReadingRequest.class
 ds\SmartClimateControlService\GetClimateReadingRequest$Builder.class

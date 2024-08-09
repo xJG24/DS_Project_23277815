@@ -22,7 +22,6 @@ C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\VitalSignControlServiceImpl.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\SmartBedControlService\SetBedHeadPositionRequest.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\SmartBedControlService\SmartBedControlService.java
-C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\Record.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\VitalSignsMonitorResponse.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\GetVitalSignsRequestOrBuilder.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\GetVitalSignsLatestResponseOrBuilder.java
@@ -48,7 +47,6 @@ C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\OperationalStatus.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\SetVitalSignsRequest.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\SmartClimateControlService\SetTemperatureResponse.java
-C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\VitalSignsControlService.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\TestingService\TestResponseOrBuilder.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\VitalSignsControlService\SetVitalSignsResponse.java
 C:\Users\jesse\Desktop\DS_Project_23277815\DS_Project_23277815\DisSysProject\src\main\java\ds\SmartClimateControlService\GetClimateReadingRequestOrBuilder.java
