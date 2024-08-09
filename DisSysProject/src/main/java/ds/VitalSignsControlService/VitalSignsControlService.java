@@ -31,6 +31,7 @@ import java.io.*;
 public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
+		
 		VitalSignsControlService vitalSignsControlService = new VitalSignsControlService();
 
 		int port = 50053;
@@ -64,22 +65,39 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 	
 	@Override
 	public void getVitalSignsHistoryDo(GetVitalSignsRequest request, StreamObserver<GetVitalSignsHistoryResponse> responseObserver) {
+		int patientID = request.getPatientID();
+		Path filePath = Paths.get("src/main/resources/vitals.txt");
 		
+		try (Scanner scanner = new Scanner(filePath)) {
+	        while (scanner.hasNextLine()) {
+	            String currentEntry = scanner.nextLine().trim();
+	            Record record = compileRecordFromFile(currentEntry);
+	            
+	            // if record matches given PatientID and is not null compile response message
+	            if (record != null && record.getPatientID() == patientID) {
+	                GetVitalSignsHistoryResponse response = GetVitalSignsHistoryResponse.newBuilder()
+	                        .setPatientID(record.getPatientID())
+	                        .setHeartRateBPM(record.getHeartRateBPM())
+	                        .setBodyTemp(record.getBodyTemp())
+	                        .setSpo2(record.getSpo2())
+	                        .setTime(record.getTime())
+	                        .build();
+	                
+	                responseObserver.onNext(response);
+	        }
+		}
+	        // finish sending responses when there are no more matching entries
+	        responseObserver.onCompleted();
+		}
+		catch (IOException e) {
+			System.out.println("Response error" + e.getMessage());
+		}
 	}
 	
 	public static void setVitalSignsDo(SetVitalSignsRequest request, StreamObserver<SetVitalSignsResponse> responseObserver) {
 		
 	}
-	
-private static Record readEntry(String file) {
-	Path filePath = Paths.get(file);
-    Record entryRecord = null;
-    try (Scanner scanner = new Scanner(filePath)) {
-        while (scanner.hasNextLine()) {
-        	
-        }
-    }
-}
+
 
 // method to read a file until the last entry which matches the provided ID
 //returns the latest string as a record object

@@ -6,12 +6,7 @@ import ds.SmartClimateControlService.SmartClimateControlServiceGrpc.SmartClimate
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import ds.SmartBedControlService.Empty;
-import ds.SmartBedControlService.GetBedPositionResponse;
-import ds.SmartBedControlService.SetBedHeadPositionRequest;
-import ds.SmartBedControlService.SetBedHeadPositionResponse;
-import ds.SmartBedControlService.SmartBedControlService;
-import ds.SmartBedControlService.SmartBedControlServiceGrpc.SmartBedControlServiceImplBase;
+
 import ds.SmartClimateControlService.GetClimateReadingResponse;
 import ds.SmartClimateControlService.GetClimateReadingRequest;
 import ds.SmartClimateControlService.OperationalStatus;
