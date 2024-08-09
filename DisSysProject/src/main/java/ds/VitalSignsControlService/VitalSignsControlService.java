@@ -96,7 +96,6 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 		}
 	}
 	
-	
 	@Override
 	public void setVitalSignsDo(SetVitalSignsRequest request, 
 			StreamObserver<SetVitalSignsResponse> responseObserver) {
@@ -127,14 +126,7 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 			}
 		}
 	
-	
-	/*
-	 * public io.grpc.stub.StreamObserver<ds.VitalSignsControlService.VitalSignsMonitorRequest> monitorVitalSignsReading(
-        io.grpc.stub.StreamObserver<ds.VitalSignsControlService.VitalSignsMonitorResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(getMonitorVitalSignsReadingMethodHelper(), responseObserver);
-    }
-	 * 
-	 * */
+	//bidi streaming method
 	@Override
 	public StreamObserver<VitalSignsMonitorRequest> monitorVitalSignsReading(
 		    StreamObserver<VitalSignsMonitorResponse> responseObserver) {
