@@ -54,7 +54,7 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 		public void setTemperatureDo(SetTemperatureRequest request, StreamObserver<SetTemperatureResponse> responseObserver) {
 			
 			// if request is in range update variable 
-			if (request.getTemperature() >= 18 && request.getTemperature() <= 25) {
+			if (request.getTemperature() >= 18.0 && request.getTemperature() <= 25.0) {
 				temperature = request.getTemperature();
 				
 				
@@ -66,8 +66,6 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 				
 				responseObserver.onNext(response);
 			    responseObserver.onCompleted();
-			    
-			// if request out of range keep variable as is 
 			} else {
 				SetTemperatureResponse response = SetTemperatureResponse.newBuilder()
 						.setTemperature(temperature)
@@ -86,7 +84,7 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 		public void setHumidityDo(SetHumidityRequest request, StreamObserver<SetHumidityResponse> responseObserver) {
 			
 			// if request is in range update variable 
-			if(request.getHumidity() >= 30 && 60 <= request.getHumidity()) {
+			if(request.getHumidity() >= 30 && request.getHumidity() <= 60) {
 				humidity = request.getHumidity();
 				SetHumidityResponse response = SetHumidityResponse.newBuilder()
 					.setHumidity(humidity)
@@ -96,8 +94,6 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 			
 			responseObserver.onNext(response);
 		    responseObserver.onCompleted();
-			
-			// if request out of range keep variable as is 
 			} else {
 				SetHumidityResponse response = SetHumidityResponse.newBuilder()
 						.setHumidity(humidity)
