@@ -54,17 +54,23 @@ public class Record {
  }
 
  public void setTime(String time) {
-     this.time = time;
+     this.time = time; 
  }
- // for history results
- public String toString() {
-	 String returnable;
-	 returnable = "Patient ID: " + getPatientID() + ", "
-	    		+ "HeartRate: " + getHeartRateBPM() + "bpm, "
-	    		+ "Body Temperature: " + getBodyTemp() + "C, "
-	    		+ "Blood Oxygen: " + getSpo2() + "%, "
-	    		+ "Time: " + getTime();
-	 return returnable;
- }
+ 
+ public boolean equals(Record record) {
+	 boolean returnable = true;
+	 if (getPatientID() != record.getPatientID()) {
+		 returnable = false;
+	 }
+	 if (getHeartRateBPM() != record.getHeartRateBPM()) {
+		 returnable = false;
+	 }
+	if (getBodyTemp() != record.getBodyTemp()) {
+		returnable = false;
+	}
+	if (getSpo2() != record.getSpo2())
+		returnable = false;
+	return returnable;
+ 	}
 }
 

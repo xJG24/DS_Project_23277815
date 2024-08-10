@@ -4,11 +4,16 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 import ds.SmartBedControlService.SmartBedControlServiceGrpc;
 import ds.SmartClimateControlService.GetClimateReadingResponse;
 import ds.SmartClimateControlService.SmartClimateControlServiceGrpc;
+import ds.VitalSignsControlService.GetVitalSignsLatestResponse;
+import ds.VitalSignsControlService.SetVitalSignsRequest;
+import ds.VitalSignsControlService.SetVitalSignsResponse;
 import ds.VitalSignsControlService.VitalSignsControlServiceGrpc;
+import ds.VitalSignsControlService.OperationalStatus;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.awt.Dimension;
@@ -553,7 +558,7 @@ private JPanel vitalSignsReadingsPanel() {
         panel.add(Box.createRigidArea(new Dimension(20, 100)));
         
         JButton buttonUpdate = new JButton("Update");
-            buttonUpdate.setActionCommand("setVitals");
+            buttonUpdate.setActionCommand("submitVitals");
             buttonUpdate.addActionListener(this);
             panel.add(buttonUpdate);
             panel.add(Box.createRigidArea(new Dimension(50, 0)));
@@ -771,25 +776,41 @@ public static void main(String[] args) {
         String command = e.getActionCommand();
 
         switch (command) {
+        
+        	// init bed control suite and call get method
             case "bedControl":
                 closeFrame();
                 
     			buildBedPage();
     			
-                ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+                ManagedChannel channel1 = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
     			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub1 = 
-    					SmartBedControlServiceGrpc.newBlockingStub(channel);
+    					SmartBedControlServiceGrpc.newBlockingStub(channel1);
 
-    			//empty message to reset
-    			ds.SmartBedControlService.Empty request1 = ds.SmartBedControlService.Empty.newBuilder().build();
+    			try {
+    				//empty message to reset
+        			ds.SmartBedControlService.Empty request1 = ds.SmartBedControlService.Empty.newBuilder().build();
 
-    			//retrieving reply from service
-    			ds.SmartBedControlService.GetBedPositionResponse response1 = blockingStub1.getBedPositionDo(request1);
+        			//retrieving reply from service
+        			ds.SmartBedControlService.GetBedPositionResponse response1 = blockingStub1.getBedPositionDo(request1);
 
-    			bedHeadPositionReply.setText( String.valueOf( response1.getBedHeadPosition()) );
-    			bedFootPositionReply.setText( String.valueOf( response1.getBedFootPosition()) );
+        			bedHeadPositionReply.setText( String.valueOf( response1.getBedHeadPosition()) );
+        			bedFootPositionReply.setText( String.valueOf( response1.getBedFootPosition()) );
 
+    			} catch (Exception ex) {
+    	            ex.printStackTrace(); 
+    	        } finally {
+    	            if (channel1 != null) {
+    	                try {
+    	                	channel1.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    	                } catch (InterruptedException ex) {
+    	                	channel1.shutdownNow();
+    	                }
+    	            }
+    	        }
     			break;
+    			
+    			// init climate control suite and call get method
             case "climateControl":
                 closeFrame();
                 
@@ -799,28 +820,65 @@ public static void main(String[] args) {
                 SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub5 = 
                 		SmartClimateControlServiceGrpc.newBlockingStub(channel5);
 
-    			//empty message to reset
-    			ds.SmartClimateControlService.GetClimateReadingRequest request5 = ds.SmartClimateControlService.GetClimateReadingRequest
-    					.newBuilder()
-    					.setRoomID(roomID)
-    					.build();
+    			try {
+    				//RoomID in message to get
+        			ds.SmartClimateControlService.GetClimateReadingRequest request5 = ds.SmartClimateControlService.GetClimateReadingRequest
+        					.newBuilder()
+        					.setRoomID(roomID)
+        					.build();
 
-    			//retrieving reply from service
-    			GetClimateReadingResponse response5 = blockingStub5.getClimateReadingDo(request5);
+        			//retrieving reply from service
+        			GetClimateReadingResponse response5 = blockingStub5.getClimateReadingDo(request5);
 
-    			temperatureReply.setText( String.valueOf( response5.getTemperature()) );
-    			humidityReply.setText( String.valueOf( response5.getHumidity()) );
-
+        			temperatureReply.setText( String.valueOf( response5.getTemperature()) );
+        			humidityReply.setText( String.valueOf( response5.getHumidity()) );
+    			} catch (Exception ex) {
+    	            ex.printStackTrace(); 
+    	        } finally {
+    	            if (channel5 != null) {
+    	                try {
+    	                	channel5.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    	                } catch (InterruptedException ex) {
+    	                	channel5.shutdownNow();
+    	                }
+    	            }
+    	        }
                 break;
+                
+             // init vital control suite and call get method
             case "vitalControl":
                 closeFrame();
                 buildVitalPage();
+                
+                ManagedChannel channel8 = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+                VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub blockingStub8 = 
+                		VitalSignsControlServiceGrpc.newBlockingStub(channel8);
+    			try {
+    				//PatientID in message to get
+        			ds.VitalSignsControlService.GetVitalSignsRequest request8 = ds.VitalSignsControlService.GetVitalSignsRequest
+        					.newBuilder()
+        					.setPatientID(patientID)
+        					.build();
+
+        			//retrieving reply from service
+        			GetVitalSignsLatestResponse response8 = blockingStub8.getVitalSignsLatestDo(request8);
+
+        			hrReply.setText( String.valueOf( response8.getHeartRateBPM()) );
+        			bodyTempReply.setText( String.valueOf( response8.getBodyTemp()) );
+        			Spo2Reply.setText( String.valueOf( response8.getSpo2()) );
+        			//vitalStatus.setText(response8.getStatusMessage());
+	    			} catch (Exception ex) {
+				            ex.printStackTrace();
+				        } finally {
+				            if (channel8 != null) {
+				                try {
+				                	channel8.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+				                } catch (InterruptedException ex) {
+				                	channel8.shutdownNow();
+				                }
+				            }
+				        }
                 break;
-                
-                
-                
-                
-                
                 
                 
                 //Begin Bed Controls
@@ -828,19 +886,31 @@ public static void main(String[] args) {
             	ManagedChannel channel4 = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
     			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub4 = 
     					SmartBedControlServiceGrpc.newBlockingStub(channel4);
+    			try {
+    				//empty message to reset
+        			ds.SmartBedControlService.Empty request4 = ds.SmartBedControlService.Empty.newBuilder().build();
 
-    			//empty message to reset
-    			ds.SmartBedControlService.Empty request4 = ds.SmartBedControlService.Empty.newBuilder().build();
+        			//retrieving reply from service
+        			ds.SmartBedControlService.ResetBedPositionResponse response4 = blockingStub4.resetBedPositionDo(request4);
 
-    			//retrieving reply from service
-    			ds.SmartBedControlService.ResetBedPositionResponse response4 = blockingStub4.resetBedPositionDo(request4);
-
-    			bedHeadPositionReply.setText( String.valueOf( response4.getBedHeadPosition()) );
-    			bedFootPositionReply.setText( String.valueOf( response4.getBedFootPosition()) );
-    			bedStatus.setText(response4.getStatusMessage());
-                break;
-                
-                //Bed Head Controls
+        			bedHeadPositionReply.setText( String.valueOf( response4.getBedHeadPosition()) );
+        			bedFootPositionReply.setText( String.valueOf( response4.getBedFootPosition()) );
+        			bedStatus.setText(response4.getStatusMessage());
+                    
+                    
+	    			} catch (Exception ex) {
+	    	            ex.printStackTrace();
+	    	        } finally {
+	    	            if (channel4 != null) {
+	    	                try {
+	    	                	channel4.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+	    	                } catch (InterruptedException ex) {
+	    	                	channel4.shutdownNow();
+	    	                }
+	    	            }
+	    	        }
+    			break;
+                //Bed Head Controls GUI methods
             case "incrementHeadCounter":
             	double currentHeadValue = Double.parseDouble(bedHeadPositionReply.getText());
             	double increment = 0.5;
@@ -857,6 +927,7 @@ public static void main(String[] args) {
             	double newValue2 = currentHeadValue2 - decrement;
             	
             	bedHeadPositionReply.setText(Double.toString(newValue2));
+
                 break;
                 
             case "submitHeadPosition":
@@ -877,7 +948,7 @@ public static void main(String[] args) {
     			bedStatus.setText(response2.getStatusMessage());
                 break;
                 
-                // Bed Foot Controls
+                // Bed Foot Controls GUI methods
             case "incrementFootPosition":
             	double currentFootValue = Double.parseDouble(bedFootPositionReply.getText());
             	increment = 0.5;
@@ -901,17 +972,29 @@ public static void main(String[] args) {
     			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub3 = 
     					SmartBedControlServiceGrpc.newBlockingStub(channel3);
 
-    			//building message to set
-    			ds.SmartBedControlService.SetBedFootPositionRequest request3 = ds.SmartBedControlService.SetBedFootPositionRequest
-    					.newBuilder()
-    					.setBedFootPosition(Float.parseFloat(bedFootPositionReply.getText()))
-    					.build();
+    			try {
+    				//building message to set
+        			ds.SmartBedControlService.SetBedFootPositionRequest request3 = ds.SmartBedControlService.SetBedFootPositionRequest
+        					.newBuilder()
+        					.setBedFootPosition(Float.parseFloat(bedFootPositionReply.getText()))
+        					.build();
 
-    			//retrieving reply from service
-    			ds.SmartBedControlService.SetBedFootPositionResponse response3 = blockingStub3.setBedFootPositionDo(request3);
+        			//retrieving reply from service
+        			ds.SmartBedControlService.SetBedFootPositionResponse response3 = blockingStub3.setBedFootPositionDo(request3);
 
-    			bedFootPositionReply.setText( String.valueOf( response3.getBedFootPosition()) );
-    			bedStatus.setText(response3.getStatusMessage());
+        			bedFootPositionReply.setText( String.valueOf( response3.getBedFootPosition()) );
+        			bedStatus.setText(response3.getStatusMessage());
+    			} catch (Exception ex) {
+    	            ex.printStackTrace();
+    	        } finally {
+    	            if (channel3 != null) {
+    	                try {
+    	                	channel3.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    	                } catch (InterruptedException ex) {
+    	                	channel3.shutdownNow();
+    	                }
+    	            }
+    	        }
                 break;
                 
                 
@@ -943,18 +1026,30 @@ public static void main(String[] args) {
                 SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub6 = 
                 		SmartClimateControlServiceGrpc.newBlockingStub(channel6);
 
-    			//empty message to reset
-    			ds.SmartClimateControlService.SetTemperatureRequest request6 = ds.SmartClimateControlService.SetTemperatureRequest
-    					.newBuilder()
-    					.setTemperature(Float.parseFloat(temperatureReply.getText()))
-    					.build();
+    			try {
+    				//message to set Temperature field
+        			ds.SmartClimateControlService.SetTemperatureRequest request6 = ds.SmartClimateControlService.SetTemperatureRequest
+        					.newBuilder()
+        					.setTemperature(Float.parseFloat(temperatureReply.getText()))
+        					.build();
 
-    			//retrieving reply from service
-    			ds.SmartClimateControlService.SetTemperatureResponse response6 = blockingStub6.setTemperatureDo(request6);
+        			//retrieving reply from service
+        			ds.SmartClimateControlService.SetTemperatureResponse response6 = blockingStub6.setTemperatureDo(request6);
 
-    			temperatureReply.setText( String.valueOf( response6.getTemperature()) );
-    			climateStatus.setText( response6.getStatusMessage());
-    			
+        			temperatureReply.setText( String.valueOf( response6.getTemperature()) );
+        			climateStatus.setText( response6.getStatusMessage());
+        			
+    			} catch (Exception ex) {
+    	            ex.printStackTrace();
+    	        } finally {
+    	            if (channel6 != null) {
+    	                try {
+    	                	channel6.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    	                } catch (InterruptedException ex) {
+    	                	channel6.shutdownNow();
+    	                }
+    	            }
+    	        }
     			break;
                 
                 //Humidity Controls
@@ -979,22 +1074,110 @@ public static void main(String[] args) {
                 SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub7 = 
                 		SmartClimateControlServiceGrpc.newBlockingStub(channel7);
 
-    			//empty message to reset
-    			ds.SmartClimateControlService.SetHumidityRequest request7 = ds.SmartClimateControlService.SetHumidityRequest
-    					.newBuilder()
-    					.setHumidity(Float.parseFloat(humidityReply.getText()))
-    					.build();
+    			try {
+    				//message to set Humidity field
+        			ds.SmartClimateControlService.SetHumidityRequest request7 = ds.SmartClimateControlService.SetHumidityRequest
+        					.newBuilder()
+        					.setHumidity(Float.parseFloat(humidityReply.getText()))
+        					.build();
 
-    			//retrieving reply from service
-    			ds.SmartClimateControlService.SetHumidityResponse response7 = blockingStub7.setHumidityDo(request7);
+        			//retrieving reply from service
+        			ds.SmartClimateControlService.SetHumidityResponse response7 = blockingStub7.setHumidityDo(request7);
 
-    			humidityReply.setText( String.valueOf( response7.getHumidity()) );
-    			climateStatus.setText( response7.getStatusMessage());
+        			humidityReply.setText( String.valueOf( response7.getHumidity()) );
+        			climateStatus.setText( response7.getStatusMessage());
+    			} catch (Exception ex) {
+    	            ex.printStackTrace();
+    	        } finally {
+    	            if (channel7 != null) {
+    	                try {
+    	                	channel7.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    	                } catch (InterruptedException ex) {
+    	                	channel7.shutdownNow();
+    	                }
+    	            }
+    	        }
+    			
+    			
                 break;
             case "Return":
                 closeFrame();
                 buildHomePage();
                 break;
+                
+                //Begin Vital Controls
+            case "getHistory":
+            	 ManagedChannel channel9 = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+                 VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub blockingStub9 = 
+                 		VitalSignsControlServiceGrpc.newBlockingStub(channel9);
+
+     			try {
+     				// Patient Id to get record history
+         			ds.VitalSignsControlService.GetVitalSignsRequest request9 = ds.VitalSignsControlService.GetVitalSignsRequest
+         					.newBuilder()
+         					.setPatientID(patientID)
+         					.build();
+
+         			//retrieving replies from service
+         			GetVitalSignsLatestResponse response9 = blockingStub9.getVitalSignsLatestDo(request9);
+
+         			hrReply.setText( String.valueOf( response9.getHeartRateBPM()) );
+         			bodyTempReply.setText( String.valueOf( response9.getBodyTemp()) );
+         			Spo2Reply.setText( String.valueOf( response9.getSpo2()) );
+         			//vitalStatus.setText(response9.getStatusMessage());
+     			} catch (Exception ex) {
+                    ex.printStackTrace(); 
+                } finally {
+                    if (channel9 != null) {
+                        try {
+                        	channel9.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+                        } catch (InterruptedException ex) {
+                        	channel9.shutdownNow();
+                        }
+                    }
+                } 	
+            	break;
+            	
+            	// includes monitor method
+            case "submitVitals":
+            	ManagedChannel channel10 = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+                VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub blockingStub10 = 
+                		VitalSignsControlServiceGrpc.newBlockingStub(channel10);
+            	try {
+            		
+        			SetVitalSignsRequest request10 = ds.VitalSignsControlService.SetVitalSignsRequest
+        					.newBuilder()
+        					.setPatientID(patientID)
+        					.setHeartRateBPM(Integer.parseInt(hrRequest.getText()))
+        					.setBodyTemp(Double.parseDouble(bodyTempRequest.getText()))
+        					.setSpo2(Integer.parseInt(Spo2Request.getText()))
+        					.setTime(java.time.LocalDateTime.now().toString())
+        					.build();
+
+        			//retrieving reply from service
+        			SetVitalSignsResponse response10 = blockingStub10.setVitalSignsDo(request10);
+
+        			if(response10.getResult() == OperationalStatus.Success) {
+        				hrReply.setText( String.valueOf( (request10.getHeartRateBPM())) );
+            			bodyTempReply.setText( String.valueOf( request10.getBodyTemp()));
+            			Spo2Reply.setText( String.valueOf( request10.getSpo2()));
+            			vitalStatus.setText(response10.getStatusMessage());
+        			} else {
+        				vitalStatus.setText(response10.getStatusMessage());
+        			}
+        			
+            	} catch (Exception ex) {
+                    ex.printStackTrace(); 
+                } finally {
+                    if (channel10 != null) {
+                        try {
+                        	channel10.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+                        } catch (InterruptedException ex) {
+                        	channel10.shutdownNow();
+                        }
+                    }
+                } 	
+            	break;
         }
     }
 }

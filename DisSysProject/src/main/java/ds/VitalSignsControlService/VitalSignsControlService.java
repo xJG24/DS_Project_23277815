@@ -109,7 +109,7 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 		if(lastMatchingRecord.equals(toAppend)) {
 			// compose success response
 			SetVitalSignsResponse response = SetVitalSignsResponse.newBuilder()
-					.setPatientID(lastMatchingRecord.getPatientID())
+					.setPatientID(toAppend.getPatientID())
 					.setResult(OperationalStatus.Success)
 					.setStatusMessage("Vital Signs Updated Successfully")
 					.build();
@@ -119,10 +119,13 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 			} else {
 				// compose failure response
 				SetVitalSignsResponse response = SetVitalSignsResponse.newBuilder()
-						.setPatientID(lastMatchingRecord.getPatientID())
+						.setPatientID(toAppend.getPatientID())
 						.setResult(OperationalStatus.Failure)
 						.setStatusMessage("Vital Signs Update Failed, please try again")
 						.build();
+				
+				responseObserver.onNext(response);
+			    responseObserver.onCompleted();
 			}
 		}
 	
@@ -170,8 +173,6 @@ public class VitalSignsControlService extends VitalSignsControlServiceImplBase {
 								.setResult(OperationalStatus.Error)
 								.setStatusMessage("Operational Error")
 								.build();
-						responseObserver.onNext(response);
-						responseObserver.onCompleted();
 						
 					}
 
@@ -205,7 +206,7 @@ private static Record readLastMatchingEntry(String file, int patientID) {
 
 //method which takes a record and turns it into a formatted string then appends to list
 private static void appendRecordToFile(String file, Record record) {
-    String newRecord = "\n" 
+    String newRecord = "\n"
     		+ record.getPatientID() + ", "
     		+ record.getHeartRateBPM() + ", "
     		+ record.getBodyTemp() + ", "
