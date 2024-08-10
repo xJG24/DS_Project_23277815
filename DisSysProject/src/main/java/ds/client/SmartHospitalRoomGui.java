@@ -4,29 +4,38 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import ds.SmartBedControlService.SmartBedControlServiceGrpc;
 import ds.SmartClimateControlService.GetClimateReadingResponse;
 import ds.SmartClimateControlService.SmartClimateControlServiceGrpc;
+import ds.VitalSignsControlService.GetVitalSignsHistoryResponse;
+import ds.VitalSignsControlService.GetVitalSignsHistoryResponseOrBuilder;
 import ds.VitalSignsControlService.GetVitalSignsLatestResponse;
 import ds.VitalSignsControlService.SetVitalSignsRequest;
 import ds.VitalSignsControlService.SetVitalSignsResponse;
+import ds.VitalSignsControlService.VitalSignsControlService;
 import ds.VitalSignsControlService.VitalSignsControlServiceGrpc;
+import ds.VitalSignsControlService.VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub;
 import ds.VitalSignsControlService.OperationalStatus;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.internal.ServerStream;
+
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -46,6 +55,10 @@ public class SmartHospitalRoomGui implements ActionListener{
     
     // PatientID for demo purposes 
     private int patientID = 1103465;
+    
+    // to display history
+    private JTextArea historyTextArea;
+
     
     // formatting panels
     private JPanel getVerticalSpacingPanel() {
@@ -80,20 +93,15 @@ public class SmartHospitalRoomGui implements ActionListener{
 		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 		
                 
-                JButton bedButton = new JButton("Enter");
-                bedButton.setActionCommand("bedControl");
-                bedButton.addActionListener(this);
-                panel.add(bedButton);
+        JButton bedButton = new JButton("Enter");
+        bedButton.setActionCommand("bedControl");
+        bedButton.addActionListener(this);
+        panel.add(bedButton);
                 
-                
-//		JButton button = new JButton("Enter");
-//		button.addActionListener(this);
-//              button.setActionCommand(actionCommand);
-//		panel.add(button);
-		panel.add(Box.createRigidArea(new Dimension(50, 0)));
-		
+        panel.add(Box.createRigidArea(new Dimension(50, 0)));
+			
 		panel.setLayout(boxlayout);
-
+	
 		return panel;
 	}
 	
@@ -164,97 +172,97 @@ public class SmartHospitalRoomGui implements ActionListener{
 //head controls
     private JPanel smartBedHeadControlPanel() {
 	
-	JPanel panel = new JPanel();
-
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		JPanel panel = new JPanel();
 	
-	JLabel label = new JLabel("Adjust Head Position: ")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		
+		JLabel label = new JLabel("Adjust Head Position: ")	;
+		panel.add(label);
+		panel.add(Box.createRigidArea(new Dimension(300, 0)));
+		
+		
+		// create buttons to increment or decrement head position
+		JButton minusButtonHead = new JButton("-");
+		minusButtonHead.setActionCommand("decrementHeadPosition");
+		minusButtonHead.addActionListener(this);
+	    panel.add(minusButtonHead);
 	
+	    panel.add(Box.createRigidArea(new Dimension(10, 0)));
 	
-	// create buttons to increment or decrement head position
-	JButton minusButtonHead = new JButton("-");
-	minusButtonHead.setActionCommand("decrementHeadPosition");
-	minusButtonHead.addActionListener(this);
-    panel.add(minusButtonHead);
-
-    panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-    // Display current head position
-    // set text to getHeadPosition
-    // will break because null
-    bedHeadPositionReply = new JTextField("0.0", 5);
-    bedHeadPositionReply.setEditable(false);
-    panel.add(bedHeadPositionReply);
-
-    panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-    JButton plusButtonHead = new JButton("+");
-    plusButtonHead.setActionCommand("incrementHeadCounter");
-    plusButtonHead.addActionListener(this);
-    panel.add(plusButtonHead);
-
-    panel.add(Box.createRigidArea(new Dimension(20, 0)));
-
-    // Create the submit button for setHeadPosition method
-    JButton submitButtonHead = new JButton("Submit");
-    submitButtonHead.setActionCommand("submitHeadPosition");
-    submitButtonHead.addActionListener(this);
-    panel.add(submitButtonHead);
-    panel.add(Box.createRigidArea(new Dimension(50, 0)));
+	    // Display current head position
+	    // set text to getHeadPosition
+	    // will break because null
+	    bedHeadPositionReply = new JTextField("0.0", 5);
+	    bedHeadPositionReply.setEditable(false);
+	    panel.add(bedHeadPositionReply);
 	
-	panel.setLayout(boxlayout);
+	    panel.add(Box.createRigidArea(new Dimension(10, 0)));
+	
+	    JButton plusButtonHead = new JButton("+");
+	    plusButtonHead.setActionCommand("incrementHeadCounter");
+	    plusButtonHead.addActionListener(this);
+	    panel.add(plusButtonHead);
+	
+	    panel.add(Box.createRigidArea(new Dimension(20, 0)));
 
-	return panel;
-}
+	    // Create the submit button for setHeadPosition method
+	    JButton submitButtonHead = new JButton("Submit");
+	    submitButtonHead.setActionCommand("submitHeadPosition");
+	    submitButtonHead.addActionListener(this);
+	    panel.add(submitButtonHead);
+	    panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		
+		panel.setLayout(boxlayout);
+	
+		return panel;
+	}
 
 //foot controls
     private JPanel smartBedFootControlPanel() {
 	
-	JPanel panel = new JPanel();
-
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		JPanel panel = new JPanel();
 	
-	JLabel label = new JLabel("Adjust Foot Position: ")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		
+		JLabel label = new JLabel("Adjust Foot Position: ")	;
+		panel.add(label);
+		panel.add(Box.createRigidArea(new Dimension(300, 0)));
+		
+		
+		// create buttons to increment or decrement head position
+		JButton minusButtonFoot = new JButton("-");
+		minusButtonFoot.setActionCommand("decrementFootPosition");
+		minusButtonFoot.addActionListener(this);
+	    panel.add(minusButtonFoot);
 	
+	    panel.add(Box.createRigidArea(new Dimension(10, 0)));
 	
-	// create buttons to increment or decrement head position
-	JButton minusButtonFoot = new JButton("-");
-	minusButtonFoot.setActionCommand("decrementFootPosition");
-	minusButtonFoot.addActionListener(this);
-    panel.add(minusButtonFoot);
-
-    panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-    // Display current head position
-    // set text to getFootPosition
-    bedFootPositionReply = new JTextField("0.0", 5);
-    bedFootPositionReply.setEditable(false);
-    panel.add(bedFootPositionReply);
-
-    panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-    JButton plusButtonFoot = new JButton("+");
-    plusButtonFoot.setActionCommand("incrementFootPosition");
-    plusButtonFoot.addActionListener(this);
-    panel.add(plusButtonFoot);
-
-    panel.add(Box.createRigidArea(new Dimension(20, 0)));
-
-    // Create the submit button for setHeadPosition method
-    JButton submitButtonFoot = new JButton("Submit");
-    submitButtonFoot.setActionCommand("submitFootPosition");
-    submitButtonFoot.addActionListener(this);
-    panel.add(submitButtonFoot);
-    panel.add(Box.createRigidArea(new Dimension(50, 0)));
+	    // Display current head position
+	    // set text to getFootPosition
+	    bedFootPositionReply = new JTextField("0.0", 5);
+	    bedFootPositionReply.setEditable(false);
+	    panel.add(bedFootPositionReply);
 	
-	panel.setLayout(boxlayout);
-
-	return panel;
-}
+	    panel.add(Box.createRigidArea(new Dimension(10, 0)));
+	
+	    JButton plusButtonFoot = new JButton("+");
+	    plusButtonFoot.setActionCommand("incrementFootPosition");
+	    plusButtonFoot.addActionListener(this);
+	    panel.add(plusButtonFoot);
+	
+	    panel.add(Box.createRigidArea(new Dimension(20, 0)));
+	
+	    // Create the submit button for setHeadPosition method
+	    JButton submitButtonFoot = new JButton("Submit");
+	    submitButtonFoot.setActionCommand("submitFootPosition");
+	    submitButtonFoot.addActionListener(this);
+	    panel.add(submitButtonFoot);
+	    panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		
+		panel.setLayout(boxlayout);
+	
+		return panel;
+	}
 
     
 	private JPanel smartBedResetPanel() {
@@ -296,70 +304,70 @@ public class SmartHospitalRoomGui implements ActionListener{
     //title
     private JPanel smartClimateControlServiceTitlePanel() {
 
-            JPanel panel = new JPanel();
+        JPanel panel = new JPanel();
 
-            BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
 
-            JLabel label = new JLabel("Climate Control Suite:")	;
-            panel.add(label);
-            panel.add(Box.createRigidArea(new Dimension(10, 0)));
-        	JLabel labelRoom = new JLabel("(RoomID: 485)")	;
-        	panel.add(labelRoom);
-            panel.add(Box.createRigidArea(new Dimension(450, 0)));
+        JLabel label = new JLabel("Climate Control Suite:")	;
+        panel.add(label);
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+     	JLabel labelRoom = new JLabel("(RoomID: 485)")	;
+       	panel.add(labelRoom);
+        panel.add(Box.createRigidArea(new Dimension(450, 0)));
 
-            JButton buttonReturn = new JButton("Return");
-            buttonReturn.addActionListener(this);
-            panel.add(buttonReturn);
-            panel.add(Box.createRigidArea(new Dimension(50, 0)));
+        JButton buttonReturn = new JButton("Return");
+        buttonReturn.addActionListener(this);
+        panel.add(buttonReturn);
+        panel.add(Box.createRigidArea(new Dimension(50, 0)));
 
 
-            return panel;
+        return panel;
     }
     //Temp controls
     private JPanel smartClimateTemperatureControlPanel() {
 
-            JPanel panel = new JPanel();
+        JPanel panel = new JPanel();
 
-            BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
 
-            JLabel label = new JLabel("Adjust Temperature(C): ")	;
-            panel.add(label);
-            panel.add(Box.createRigidArea(new Dimension(250, 0)));
+        JLabel label = new JLabel("Adjust Temperature(C): ")	;
+        panel.add(label);
+        panel.add(Box.createRigidArea(new Dimension(250, 0)));
 
 
-            // create buttons to increment or decrement head position
-            JButton minusButtonTemperature = new JButton("-");
-            minusButtonTemperature.setActionCommand("decrementTemperature");
-            minusButtonTemperature.addActionListener(this);
-            panel.add(minusButtonTemperature);
+        // create buttons to increment or decrement head position
+        JButton minusButtonTemperature = new JButton("-");
+        minusButtonTemperature.setActionCommand("decrementTemperature");
+        minusButtonTemperature.addActionListener(this);
+        panel.add(minusButtonTemperature);
 
-            panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
-            // Display current Temperature
-            // set text to getTemperature 
-            temperatureReply = new JTextField("23.0", 5);
-            temperatureReply.setEditable(false);
-            panel.add(temperatureReply);
+        // Display current Temperature
+        // set text to getTemperature 
+        temperatureReply = new JTextField("23.0", 5);
+        temperatureReply.setEditable(false);
+        panel.add(temperatureReply);
 
-            panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
-            JButton plusButtonTemperature = new JButton("+");
-            plusButtonTemperature.setActionCommand("incrementTemperature");
-            plusButtonTemperature.addActionListener(this);
-            panel.add(plusButtonTemperature);
+        JButton plusButtonTemperature = new JButton("+");
+        plusButtonTemperature.setActionCommand("incrementTemperature");
+        plusButtonTemperature.addActionListener(this);
+        panel.add(plusButtonTemperature);
 
-            panel.add(Box.createRigidArea(new Dimension(20, 0)));
+        panel.add(Box.createRigidArea(new Dimension(20, 0)));
 
-     // Create the submit button for setHeadTemperature method
-     JButton submitButtonTemperature = new JButton("Submit");
-     submitButtonTemperature.setActionCommand("submitTemperature");
-     submitButtonTemperature.addActionListener(this);
-     panel.add(submitButtonTemperature);
-     panel.add(Box.createRigidArea(new Dimension(50, 0)));
+        // Create the submit button for setHeadTemperature method
+        JButton submitButtonTemperature = new JButton("Submit");
+        submitButtonTemperature.setActionCommand("submitTemperature");
+        submitButtonTemperature.addActionListener(this);
+        panel.add(submitButtonTemperature);
+        panel.add(Box.createRigidArea(new Dimension(50, 0)));
 
-            panel.setLayout(boxlayout);
+        panel.setLayout(boxlayout);
 
-            return panel;
+        return panel;
     }
     
 
@@ -426,32 +434,32 @@ public class SmartHospitalRoomGui implements ActionListener{
 
 //fourth page -> Vital Monitor Controls ################################################################################
 
-private JPanel vitalSignsServiceTitlePanel() {
+	private JPanel vitalSignsServiceTitlePanel() {
+		
+		JPanel panel = new JPanel();
 	
-	JPanel panel = new JPanel();
-
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		
+		JLabel labelTitle = new JLabel("Vital Monitor Suite:")	;
+		panel.add(labelTitle);
+		panel.add(Box.createRigidArea(new Dimension(10, 0)));
+		JLabel labelPatient = new JLabel("(PatientID: 1103465)")	;
+		panel.add(labelPatient);
+		panel.add(Box.createRigidArea(new Dimension(400, 0)));
+		
+		JButton buttonReturn = new JButton("Return");
+		buttonReturn.addActionListener(this);
+		panel.add(buttonReturn);
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		
+		panel.setLayout(boxlayout);
+		
+		return panel;
+	}
 	
-	JLabel labelTitle = new JLabel("Vital Monitor Suite:")	;
-	panel.add(labelTitle);
-	panel.add(Box.createRigidArea(new Dimension(10, 0)));
-	JLabel labelPatient = new JLabel("(PatientID: 1103465)")	;
-	panel.add(labelPatient);
-	panel.add(Box.createRigidArea(new Dimension(400, 0)));
-	
-	JButton buttonReturn = new JButton("Return");
-	buttonReturn.addActionListener(this);
-	panel.add(buttonReturn);
-	panel.add(Box.createRigidArea(new Dimension(50, 0)));
-	
-	panel.setLayout(boxlayout);
-	
-	return panel;
-}
-
-private JPanel vitalSignsCurrentLabelPanel() {
-	
-	JPanel panel = new JPanel();
+	private JPanel vitalSignsCurrentLabelPanel() {
+		
+		JPanel panel = new JPanel();
 	
         BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
@@ -472,12 +480,12 @@ private JPanel vitalSignsCurrentLabelPanel() {
 	
         panel.setLayout(boxlayout);
 	
-	return panel;
-}
+        return panel;
+	}
 
-private JPanel vitalSignsUpdateLabelPanel() {
+	private JPanel vitalSignsUpdateLabelPanel() {
 	
-	JPanel panel = new JPanel();
+		JPanel panel = new JPanel();
 	
         BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
@@ -501,9 +509,9 @@ private JPanel vitalSignsUpdateLabelPanel() {
 	return panel;
 }
 
-private JPanel vitalSignsReadingsPanel() {
-	
-	JPanel panel = new JPanel();
+	private JPanel vitalSignsReadingsPanel() {
+		
+		JPanel panel = new JPanel();
 	
         BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
@@ -521,8 +529,8 @@ private JPanel vitalSignsReadingsPanel() {
 	
         panel.setLayout(boxlayout);
 	
-	return panel;
-}
+        return panel;
+	}
 
 	private JPanel vitalSignsCurrentReadingsPanel() {
 	
@@ -546,7 +554,7 @@ private JPanel vitalSignsReadingsPanel() {
 	
 	    panel.setLayout(boxlayout);
 	
-	return panel;
+	    return panel;
 	}
 
 	private JPanel vitalSignsUpdatePanel() {
@@ -557,30 +565,59 @@ private JPanel vitalSignsReadingsPanel() {
         
         panel.add(Box.createRigidArea(new Dimension(20, 100)));
         
+        JPanel internalPanel = new JPanel();
+        BoxLayout internalBoxLayout= new BoxLayout(internalPanel, BoxLayout.X_AXIS);
+        
+        JButton buttonHistory = new JButton("History");
+        buttonHistory.setActionCommand("getHistory");
+        buttonHistory.addActionListener(this);
+        internalPanel.add(buttonHistory);
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        
         JButton buttonUpdate = new JButton("Update");
-            buttonUpdate.setActionCommand("submitVitals");
-            buttonUpdate.addActionListener(this);
-            panel.add(buttonUpdate);
-            panel.add(Box.createRigidArea(new Dimension(50, 0)));
+        buttonUpdate.setActionCommand("submitVitals");
+        buttonUpdate.addActionListener(this);
+        internalPanel.add(buttonUpdate);
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        
+        panel.add(internalPanel);
         
         panel.setLayout(boxlayout);
 	
-	return panel;
-}
+        return panel;
+	}
 
-private JPanel smartVitalSignsStatusPanel() {
+	private JPanel smartVitalSignsStatusPanel() {
+	
+	    JPanel panel = new JPanel();
+	
+	    BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+	
+	    vitalStatus = new JTextField(10);
+	    panel.add(vitalStatus);
+	    
+	    panel.setLayout(boxlayout);
+	
+	    return panel;
+	}
 
-    JPanel panel = new JPanel();
-
-    BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-
-    vitalStatus = new JTextField(10);
-    panel.add(vitalStatus);
-    
-    panel.setLayout(boxlayout);
-
-    return panel;
-}
+	
+	
+	//helper method to format stream of history responses
+	private String formatResponseToString(GetVitalSignsHistoryResponse response) {
+	   String returnable = String.format("HeartRate(BPM): %d | Temperature(C): %.2f | Blood Oxygen(SpO2): %d | Time: %s \n",
+	            response.getHeartRateBPM(),
+	            response.getBodyTemp(),
+	            response.getSpo2(),
+	            response.getTime());
+	   return returnable;
+	}
+	
+	// helper method to append record to text area
+	private void addRecordToHistory(String record){
+		
+		historyTextArea.append(record);
+	}
 	
 public static void main(String[] args) {
 
@@ -681,12 +718,8 @@ public static void main(String[] args) {
 		panel.setBorder(new EmptyBorder(new Insets(50, 100, 50, 100)));
 	
 		panel.add( smartClimateControlServiceTitlePanel() );
-                panel.add(getVerticalSpacingPanel());
-		panel.add( smartClimateTemperatureControlPanel() );
-                panel.add(getVerticalSpacingPanel());
-                panel.add( smartClimateHumidityControlPanel() );
-                panel.add(getVerticalSpacingPanel());
-                panel.add(smartClimateStatusPanel());
+        panel.add(getVerticalSpacingPanel());
+		
 
 
 		// Set size for the frame
@@ -709,7 +742,7 @@ public static void main(String[] args) {
 		// Set the BoxLayout to be X_AXIS: from left to right
 		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
-                panel.setLayout(boxlayout);
+        panel.setLayout(boxlayout);
 
 		// Set border for the panel
 		panel.setBorder(new EmptyBorder(new Insets(50, 100, 50, 100)));
@@ -748,7 +781,30 @@ public static void main(String[] args) {
                 
         }
         
-        
+        private void buildHistoryPage() {
+        	
+        	frame = new JFrame("Vital Monitor History");
+    		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        	// Set the panel to add buttons
+    		JPanel panel = new JPanel();
+
+    		// Set the BoxLayout to be X_AXIS: from left to right
+    		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+    		
+    		historyTextArea = new JTextArea(100,100);
+    		historyTextArea.setEditable(false);
+    		panel.add(historyTextArea);
+    		
+    		
+    		// Set size for the frame
+    		frame.setSize(300, 300);
+
+    		// Set the window to be visible as the default to be false
+    		frame.add(panel);
+    		frame.pack();
+    		frame.setVisible(true);
+        	
+        } 
         
         
         
@@ -1107,36 +1163,41 @@ public static void main(String[] args) {
                 
                 //Begin Vital Controls
             case "getHistory":
-            	 ManagedChannel channel9 = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
-                 VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub blockingStub9 = 
+            	
+            	buildHistoryPage();
+            	
+            	ManagedChannel channel9 = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+                VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub blockingStub9 = 
                  		VitalSignsControlServiceGrpc.newBlockingStub(channel9);
 
      			try {
-     				// Patient Id to get record history
+     				// Patient Id in Message to get record history
          			ds.VitalSignsControlService.GetVitalSignsRequest request9 = ds.VitalSignsControlService.GetVitalSignsRequest
          					.newBuilder()
          					.setPatientID(patientID)
          					.build();
 
          			//retrieving replies from service
-         			GetVitalSignsLatestResponse response9 = blockingStub9.getVitalSignsLatestDo(request9);
+         			 Iterator<GetVitalSignsHistoryResponse> responses = blockingStub9.getVitalSignsHistoryDo(request9);
 
-         			hrReply.setText( String.valueOf( response9.getHeartRateBPM()) );
-         			bodyTempReply.setText( String.valueOf( response9.getBodyTemp()) );
-         			Spo2Reply.setText( String.valueOf( response9.getSpo2()) );
-         			//vitalStatus.setText(response9.getStatusMessage());
-     			} catch (Exception ex) {
-                    ex.printStackTrace(); 
-                } finally {
-                    if (channel9 != null) {
-                        try {
-                        	channel9.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-                        } catch (InterruptedException ex) {
-                        	channel9.shutdownNow();
-                        }
-                    }
-                } 	
-            	break;
+                     // Process each response from the server
+                     while (responses.hasNext()) {
+                         GetVitalSignsHistoryResponse response = responses.next();
+                         addRecordToHistory(formatResponseToString(response));
+         
+     			}
+     				} catch (Exception ex) {
+	                    ex.printStackTrace(); 
+	                } finally {
+	                    if (channel9 != null) {
+	                        try {
+	                        	channel9.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+	                        } catch (InterruptedException ex) {
+	                        	channel9.shutdownNow();
+	                        }
+	                    }
+	                } 	
+	            	break;
             	
             	// includes monitor method
             case "submitVitals":
