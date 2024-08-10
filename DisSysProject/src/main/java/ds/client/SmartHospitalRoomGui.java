@@ -23,6 +23,7 @@ import ds.VitalSignsControlService.VitalSignsMonitorResponse;
 import ds.VitalSignsControlService.OperationalStatus;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import io.grpc.internal.ServerStream;
 import io.grpc.stub.StreamObserver;
 
@@ -863,7 +864,10 @@ public static void main(String[] args) {
         			bedHeadPositionReply.setText( String.valueOf( response1.getBedHeadPosition()) );
         			bedFootPositionReply.setText( String.valueOf( response1.getBedFootPosition()) );
 
-    			} catch (Exception ex) {
+    			} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
     	            ex.printStackTrace(); 
     	        } finally {
     	            if (channel1 != null) {
@@ -898,7 +902,10 @@ public static void main(String[] args) {
 
         			temperatureReply.setText( String.valueOf( response5.getTemperature()) );
         			humidityReply.setText( String.valueOf( response5.getHumidity()) );
-    			} catch (Exception ex) {
+    			} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
     	            ex.printStackTrace(); 
     	        } finally {
     	            if (channel5 != null) {
@@ -933,7 +940,10 @@ public static void main(String[] args) {
         			bodyTempReply.setText( String.valueOf( response8.getBodyTemp()) );
         			Spo2Reply.setText( String.valueOf( response8.getSpo2()) );
         			//vitalStatus.setText(response8.getStatusMessage());
-	    			} catch (Exception ex) {
+	    			} catch (StatusRuntimeException ex) {
+	    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+	    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+	        		} catch (Exception ex) {
 				            ex.printStackTrace();
 				        } finally {
 				            if (channel8 != null) {
@@ -967,7 +977,10 @@ public static void main(String[] args) {
         			bedStatus.setText(response4.getStatusMessage());
                     
                     
-	    			} catch (Exception ex) {
+	    			} catch (StatusRuntimeException ex) {
+	    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+	    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+	        		} catch (Exception ex) {
 	    	            ex.printStackTrace();
 	    	        } finally {
 	    	            if (channel4 != null) {
@@ -1016,7 +1029,10 @@ public static void main(String[] args) {
 
         			bedHeadPositionReply.setText( String.valueOf( response2.getBedHeadPosition()) );
         			bedStatus.setText(response2.getStatusMessage());
-    			} catch (Exception ex) {
+    			} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
     	            ex.printStackTrace();
     	        } finally {
     	            if (channel2 != null) {
@@ -1065,7 +1081,10 @@ public static void main(String[] args) {
 
         			bedFootPositionReply.setText( String.valueOf( response3.getBedFootPosition()) );
         			bedStatus.setText(response3.getStatusMessage());
-    			} catch (Exception ex) {
+    			} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
     	            ex.printStackTrace();
     	        } finally {
     	            if (channel3 != null) {
@@ -1122,7 +1141,10 @@ public static void main(String[] args) {
         			temperatureReply.setText( String.valueOf( response6.getTemperature()) );
         			climateStatus.setText( response6.getStatusMessage());
         			
-    			} catch (Exception ex) {
+    			} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
     	            ex.printStackTrace();
     	        } finally {
     	            if (channel6 != null) {
@@ -1169,7 +1191,10 @@ public static void main(String[] args) {
 
         			humidityReply.setText( String.valueOf( response7.getHumidity()) );
         			climateStatus.setText( response7.getStatusMessage());
-    			} catch (Exception ex) {
+    			} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
     	            ex.printStackTrace();
     	        } finally {
     	            if (channel7 != null) {
@@ -1214,7 +1239,10 @@ public static void main(String[] args) {
                          GetVitalSignsHistoryResponse response = responses.next();
                          addRecordToHistory(formatResponseToString(response));
 	     			}
-	     				} catch (Exception ex) {
+	     				} catch (StatusRuntimeException ex) {
+	        			    System.out.println("Status Code: " + ex.getStatus().getCode());
+	        			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+	            		} catch (Exception ex) {
 		                    ex.printStackTrace(); 
 		                } finally {
 		                    if (channel9 != null) {
@@ -1255,7 +1283,10 @@ public static void main(String[] args) {
         				vitalStatus.setText(response10.getStatusMessage());
         			}
         			
-            	} catch (Exception ex) {
+            	} catch (StatusRuntimeException ex) {
+    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+        		} catch (Exception ex) {
                     ex.printStackTrace(); 
                 } finally {
                     if (channel10 != null) {
@@ -1307,7 +1338,10 @@ public static void main(String[] args) {
 						
 				        //requestObserver.onCompleted();
 
-					} catch (Exception ex) {
+					} catch (StatusRuntimeException ex) {
+	    			    System.out.println("Status Code: " + ex.getStatus().getCode());
+	    			    System.out.println("Status Description: " + ex.getStatus().getDescription());
+	        		} catch (Exception ex) {
 			            ex.printStackTrace();
 			        } finally {
 			            if (channel11 != null) {
