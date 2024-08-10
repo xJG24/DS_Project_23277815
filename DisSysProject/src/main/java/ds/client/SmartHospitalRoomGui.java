@@ -18,10 +18,13 @@ import ds.VitalSignsControlService.SetVitalSignsResponse;
 import ds.VitalSignsControlService.VitalSignsControlService;
 import ds.VitalSignsControlService.VitalSignsControlServiceGrpc;
 import ds.VitalSignsControlService.VitalSignsControlServiceGrpc.VitalSignsControlServiceBlockingStub;
+import ds.VitalSignsControlService.VitalSignsMonitorRequest;
+import ds.VitalSignsControlService.VitalSignsMonitorResponse;
 import ds.VitalSignsControlService.OperationalStatus;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.internal.ServerStream;
+import io.grpc.stub.StreamObserver;
 
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -48,7 +51,7 @@ public class SmartHospitalRoomGui implements ActionListener{
     
     //used to update text fields
     private JTextField bedHeadPositionReply, bedFootPositionReply,bedStatus,temperatureReply,humidityReply, climateStatus, 
-    hrRequest, bodyTempRequest, Spo2Request, vitalStatus, hrReply, bodyTempReply, Spo2Reply;
+    hrRequest, bodyTempRequest, Spo2Request, vitalStatus, hrReply, bodyTempReply, Spo2Reply, vitalSafetyStatus;
 
     //RoomID for demo purposes
     private int roomID = 485;
@@ -600,6 +603,21 @@ public class SmartHospitalRoomGui implements ActionListener{
 	
 	    return panel;
 	}
+	
+	private JPanel smartVitalSignsSafetyPanel() {
+		
+	    JPanel panel = new JPanel();
+	
+	    BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+	
+	    vitalSafetyStatus = new JTextField("Safety Status: ",10);
+	    vitalSafetyStatus.setEditable(false);
+	    panel.add(vitalSafetyStatus);
+	    
+	    panel.setLayout(boxlayout);
+	
+	    return panel;
+	}
 
 	
 	
@@ -625,7 +643,8 @@ public static void main(String[] args) {
 
 	gui.buildHomePage();
 }
-       private void closeFrame() {
+
+	private void closeFrame() {
         if (frame != null) {
             frame.dispose();
         }
@@ -771,9 +790,13 @@ public static void main(String[] args) {
                 
                 
                 
+                
+                
                 panel.add(contentPanel);
                 panel.add(getVerticalSpacingPanel());
                 panel.add(smartVitalSignsStatusPanel());
+                panel.add(getVerticalSpacingPanel());
+                panel.add(smartVitalSignsSafetyPanel());
                 
                 frame.add(panel);
                 frame.pack();
@@ -807,26 +830,8 @@ public static void main(String[] args) {
         } 
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+   
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -934,6 +939,9 @@ public static void main(String[] args) {
 				                }
 				            }
 				        }
+    			
+    			
+    			
                 break;
                 
                 
@@ -1156,6 +1164,8 @@ public static void main(String[] args) {
     			
     			
                 break;
+                
+                //generic app home return button
             case "Return":
                 closeFrame();
                 buildHomePage();
@@ -1177,27 +1187,26 @@ public static void main(String[] args) {
          					.setPatientID(patientID)
          					.build();
 
-         			//retrieving replies from service
+         			//retrieving and handling replies from service
          			 Iterator<GetVitalSignsHistoryResponse> responses = blockingStub9.getVitalSignsHistoryDo(request9);
 
-                     // Process each response from the server
+                     // Process and append each response from the server
                      while (responses.hasNext()) {
                          GetVitalSignsHistoryResponse response = responses.next();
                          addRecordToHistory(formatResponseToString(response));
-         
-     			}
-     				} catch (Exception ex) {
-	                    ex.printStackTrace(); 
-	                } finally {
-	                    if (channel9 != null) {
-	                        try {
-	                        	channel9.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-	                        } catch (InterruptedException ex) {
-	                        	channel9.shutdownNow();
-	                        }
-	                    }
-	                } 	
-	            	break;
+	     			}
+	     				} catch (Exception ex) {
+		                    ex.printStackTrace(); 
+		                } finally {
+		                    if (channel9 != null) {
+		                        try {
+		                        	channel9.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+		                        } catch (InterruptedException ex) {
+		                        	channel9.shutdownNow();
+		                        }
+		                    }
+		                } 	
+		            break;
             	
             	// includes monitor method
             case "submitVitals":
@@ -1238,6 +1247,58 @@ public static void main(String[] args) {
                         }
                     }
                 } 	
+            	
+            	//bidirectional streaming method to monitor safety range for vitals
+    			ManagedChannel channel11 = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+                VitalSignsControlServiceGrpc.VitalSignsControlServiceStub asyncStub11 = 
+                		VitalSignsControlServiceGrpc.newStub(channel11);
+                
+  
+
+                	StreamObserver<VitalSignsMonitorResponse> responseObserver = new StreamObserver<VitalSignsMonitorResponse>() {
+                        @Override
+                        public void onNext(VitalSignsMonitorResponse response) {
+                            
+                        	//Handle each response from the server
+                        	vitalSafetyStatus.setText(response.getStatusMessage());
+                        }
+
+						@Override
+						public void onError(Throwable t) {
+							t.printStackTrace();
+							
+						}
+
+						@Override
+						public void onCompleted() {
+
+						}
+					};
+					
+					StreamObserver<VitalSignsMonitorRequest> requestObserver = asyncStub11.monitorVitalSignsReading(responseObserver);
+					try {
+						requestObserver.onNext(VitalSignsMonitorRequest.newBuilder()
+					            .setPatientID(patientID)
+					            .setHeartRateBPM(Integer.parseInt(hrRequest.getText()))
+					            .setBodyTemp(Double.parseDouble(bodyTempRequest.getText()))
+					            .setSpo2(Integer.parseInt(Spo2Request.getText()))
+					            .setTime(java.time.LocalDateTime.now().toString())
+					            .build());
+						
+						
+				        requestObserver.onCompleted();
+
+					} catch (Exception ex) {
+			            ex.printStackTrace();
+			        } finally {
+			            if (channel11 != null) {
+			                try {
+			                	channel11.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+			                } catch (InterruptedException ex) {
+			                	channel11.shutdownNow();
+			                }
+			            }
+			        }
             	break;
         }
     }
