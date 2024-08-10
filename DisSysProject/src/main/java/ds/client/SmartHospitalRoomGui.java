@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import ds.SmartBedControlService.SmartBedControlServiceGrpc;
+import ds.SmartClimateControlService.GetClimateReadingResponse;
 import ds.SmartClimateControlService.SmartClimateControlServiceGrpc;
 import ds.VitalSignsControlService.VitalSignsControlServiceGrpc;
 import io.grpc.ManagedChannel;
@@ -28,14 +29,20 @@ import javax.swing.border.EmptyBorder;
 
 public class SmartHospitalRoomGui implements ActionListener{
     
-        // used to close frames when swappig between services
+    // used to close frames when swapping between services
     private JFrame frame; 
     
-    //used to update textfields
-    private JTextField bedStatus, climateStatus, vitalStatus, hrReply, bodyTempReply, Spo2Reply;
+    //used to update text fields
+    private JTextField bedHeadPositionReply, bedFootPositionReply,bedStatus,temperatureReply,humidityReply, climateStatus, 
+    hrRequest, bodyTempRequest, Spo2Request, vitalStatus, hrReply, bodyTempReply, Spo2Reply;
 
-//first page -> select services 
+    //RoomID for demo purposes
+    private int roomID = 485;
     
+    // PatientID for demo purposes 
+    private int patientID = 1103465;
+    
+    // formatting panels
     private JPanel getVerticalSpacingPanel() {
 		
 		JPanel panel = new JPanel();
@@ -53,6 +60,10 @@ public class SmartHospitalRoomGui implements ActionListener{
 		panel.setLayout(boxlayout);
 		return panel;
 	}
+    
+//first page -> select services ################################################################################
+    
+
     private JPanel getSmartBedControlServicePanel() {
 		
 		JPanel panel = new JPanel();
@@ -128,23 +139,23 @@ public class SmartHospitalRoomGui implements ActionListener{
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private JPanel smartBedControlServiceTitlePanel() {
 	
-	JPanel panel = new JPanel();
-
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		JPanel panel = new JPanel();
 	
-	JLabel label = new JLabel("Smart Bed Control Suite:")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(450, 0)));
-	
-	JButton buttonReturn = new JButton("Return");
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		
+		JLabel label = new JLabel("Smart Bed Control Suite:")	;
+		panel.add(label);
+		panel.add(Box.createRigidArea(new Dimension(450, 0)));
+		
+		JButton buttonReturn = new JButton("Return");
         buttonReturn.setActionCommand("Return");
-	buttonReturn.addActionListener(this);
-	panel.add(buttonReturn);
-	panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		buttonReturn.addActionListener(this);
+		panel.add(buttonReturn);
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 	
 
-	return panel;
-}
+		return panel;
+	}
 //head controls
     private JPanel smartBedHeadControlPanel() {
 	
@@ -159,6 +170,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 	
 	// create buttons to increment or decrement head position
 	JButton minusButtonHead = new JButton("-");
+	minusButtonHead.setActionCommand("decrementHeadPosition");
 	minusButtonHead.addActionListener(this);
     panel.add(minusButtonHead);
 
@@ -166,13 +178,15 @@ public class SmartHospitalRoomGui implements ActionListener{
 
     // Display current head position
     // set text to getHeadPosition
-    JTextField headPosition = new JTextField("0.0", 5);
-    headPosition.setEditable(false);
-    panel.add(headPosition);
+    // will break because null
+    bedHeadPositionReply = new JTextField("0.0", 5);
+    bedHeadPositionReply.setEditable(false);
+    panel.add(bedHeadPositionReply);
 
     panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
     JButton plusButtonHead = new JButton("+");
+    plusButtonHead.setActionCommand("incrementHeadCounter");
     plusButtonHead.addActionListener(this);
     panel.add(plusButtonHead);
 
@@ -180,6 +194,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 
     // Create the submit button for setHeadPosition method
     JButton submitButtonHead = new JButton("Submit");
+    submitButtonHead.setActionCommand("submitHeadPosition");
     submitButtonHead.addActionListener(this);
     panel.add(submitButtonHead);
     panel.add(Box.createRigidArea(new Dimension(50, 0)));
@@ -203,6 +218,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 	
 	// create buttons to increment or decrement head position
 	JButton minusButtonFoot = new JButton("-");
+	minusButtonFoot.setActionCommand("decrementFootPosition");
 	minusButtonFoot.addActionListener(this);
     panel.add(minusButtonFoot);
 
@@ -210,13 +226,14 @@ public class SmartHospitalRoomGui implements ActionListener{
 
     // Display current head position
     // set text to getFootPosition
-    JTextField footPosition = new JTextField("0.0", 5);
-    footPosition.setEditable(false);
-    panel.add(footPosition);
+    bedFootPositionReply = new JTextField("0.0", 5);
+    bedFootPositionReply.setEditable(false);
+    panel.add(bedFootPositionReply);
 
     panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
     JButton plusButtonFoot = new JButton("+");
+    plusButtonFoot.setActionCommand("incrementFootPosition");
     plusButtonFoot.addActionListener(this);
     panel.add(plusButtonFoot);
 
@@ -224,6 +241,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 
     // Create the submit button for setHeadPosition method
     JButton submitButtonFoot = new JButton("Submit");
+    submitButtonFoot.setActionCommand("submitFootPosition");
     submitButtonFoot.addActionListener(this);
     panel.add(submitButtonFoot);
     panel.add(Box.createRigidArea(new Dimension(50, 0)));
@@ -233,25 +251,40 @@ public class SmartHospitalRoomGui implements ActionListener{
 	return panel;
 }
 
-    private JPanel smartBedResetPanel() {
+    
+	private JPanel smartBedResetPanel() {
+		
+		JPanel panel = new JPanel();
 	
-	JPanel panel = new JPanel();
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		
+		JLabel label = new JLabel("Reset Smart Bed Position:")	;
+		panel.add(label);
+		panel.add(Box.createRigidArea(new Dimension(450, 0)));
+		
+		JButton buttonReset = new JButton("Reset");
+		buttonReset.setActionCommand("resetBedPosition");
+		buttonReset.addActionListener(this);
+		panel.add(buttonReset);
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		
+	
+		return panel;
+	}
 
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-	
-	JLabel label = new JLabel("Reset Smart Bed Position:")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(450, 0)));
-	
-	JButton buttonReset = new JButton("Reset");
-	buttonReset.addActionListener(this);
-	panel.add(buttonReset);
-	panel.add(Box.createRigidArea(new Dimension(50, 0)));
-	
+    private JPanel smartBedStatusPanel() {
 
-	return panel;
-}
+        JPanel panel = new JPanel();
 
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+
+        bedStatus = new JTextField(10);
+        panel.add(bedStatus);
+        
+        panel.setLayout(boxlayout);
+
+        return panel;
+    }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //third page -> Smart Climate Controls ################################################################################
@@ -264,6 +297,9 @@ public class SmartHospitalRoomGui implements ActionListener{
 
             JLabel label = new JLabel("Climate Control Suite:")	;
             panel.add(label);
+            panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        	JLabel labelRoom = new JLabel("(RoomID: 485)")	;
+        	panel.add(labelRoom);
             panel.add(Box.createRigidArea(new Dimension(450, 0)));
 
             JButton buttonReturn = new JButton("Return");
@@ -288,6 +324,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 
             // create buttons to increment or decrement head position
             JButton minusButtonTemperature = new JButton("-");
+            minusButtonTemperature.setActionCommand("decrementTemperature");
             minusButtonTemperature.addActionListener(this);
             panel.add(minusButtonTemperature);
 
@@ -295,13 +332,14 @@ public class SmartHospitalRoomGui implements ActionListener{
 
             // Display current Temperature
             // set text to getTemperature 
-            JTextField currentTemperature = new JTextField("0.0", 5);
-            currentTemperature.setEditable(false);
-            panel.add(currentTemperature);
+            temperatureReply = new JTextField("23.0", 5);
+            temperatureReply.setEditable(false);
+            panel.add(temperatureReply);
 
             panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
             JButton plusButtonTemperature = new JButton("+");
+            plusButtonTemperature.setActionCommand("incrementTemperature");
             plusButtonTemperature.addActionListener(this);
             panel.add(plusButtonTemperature);
 
@@ -309,6 +347,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 
      // Create the submit button for setHeadTemperature method
      JButton submitButtonTemperature = new JButton("Submit");
+     submitButtonTemperature.setActionCommand("submitTemperature");
      submitButtonTemperature.addActionListener(this);
      panel.add(submitButtonTemperature);
      panel.add(Box.createRigidArea(new Dimension(50, 0)));
@@ -318,62 +357,52 @@ public class SmartHospitalRoomGui implements ActionListener{
             return panel;
     }
     
-    private JPanel smartBedStatusPanel() {
-
-        JPanel panel = new JPanel();
-
-        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-
-        bedStatus = new JTextField(10);
-        panel.add(bedStatus);
-        
-        panel.setLayout(boxlayout);
-
-        return panel;
-    }
 
     //humidity controls
     private JPanel smartClimateHumidityControlPanel() {
 
-            JPanel panel = new JPanel();
+    	JPanel panel = new JPanel();
 
-            BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+    	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
 
-            JLabel label = new JLabel("Adjust Humidity(%): ")	;
-            panel.add(label);
-            panel.add(Box.createRigidArea(new Dimension(300, 0)));
+    	JLabel label = new JLabel("Adjust Humidity(%): ")	;
+    	panel.add(label);
+        panel.add(Box.createRigidArea(new Dimension(300, 0)));
 
 
-            // create buttons to increment or decrement head position
-            JButton minusButtonHumidity = new JButton("-");
-            minusButtonHumidity.addActionListener(this);
-     panel.add(minusButtonHumidity);
+        // create buttons to increment or decrement head position
+        JButton minusButtonHumidity = new JButton("-");
+        minusButtonHumidity.setActionCommand("decrementHumidity");
+        minusButtonHumidity.addActionListener(this);
+        panel.add(minusButtonHumidity);
 
-     panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
-     // Display current Humidity
-     // set text to getHumidity
-     JTextField currentHumidity = new JTextField("0.0", 5);
-     currentHumidity.setEditable(false);
-     panel.add(currentHumidity);
+	    // Display current Humidity
+	    // set text to getHumidity
+	    humidityReply = new JTextField("0.0", 5);
+	    humidityReply.setEditable(false);
+	    panel.add(humidityReply);
+	
+	    panel.add(Box.createRigidArea(new Dimension(10, 0)));
+	
+	    JButton plusButtonHumidity = new JButton("+");
+	    plusButtonHumidity.setActionCommand("incrementHumidity");
+	    plusButtonHumidity.addActionListener(this);
+	    panel.add(plusButtonHumidity);
+	
+	    panel.add(Box.createRigidArea(new Dimension(20, 0)));
+	
+	    // Create the submit button for setHumidity method
+	    JButton submitButtonHumidity = new JButton("Submit");
+	    submitButtonHumidity.setActionCommand("submitHumidity");
+	    submitButtonHumidity.addActionListener(this);
+	    panel.add(submitButtonHumidity);
+	    panel.add(Box.createRigidArea(new Dimension(50, 0)));
 
-     panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        panel.setLayout(boxlayout);
 
-     JButton plusButtonHumidity = new JButton("+");
-     plusButtonHumidity.addActionListener(this);
-     panel.add(plusButtonHumidity);
-
-     panel.add(Box.createRigidArea(new Dimension(20, 0)));
-
-     // Create the submit button for setHumidity method
-     JButton submitButtonHumidity = new JButton("Submit");
-     submitButtonHumidity.addActionListener(this);
-     panel.add(submitButtonHumidity);
-     panel.add(Box.createRigidArea(new Dimension(50, 0)));
-
-            panel.setLayout(boxlayout);
-
-            return panel;
+        return panel;
     }
     
     private JPanel smartClimateStatusPanel() {
@@ -415,56 +444,109 @@ private JPanel vitalSignsServiceTitlePanel() {
 	return panel;
 }
 
-private JPanel vitalSignsPanel() {
+private JPanel vitalSignsCurrentLabelPanel() {
 	
 	JPanel panel = new JPanel();
 	
         BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
         
-        JLabel labelHR = new JLabel("HeartRate(bpm):")	;
-	panel.add(labelHR);
+        JLabel labelHR = new JLabel("Current HeartRate(bpm):")	;
+        panel.add(labelHR);
         
 
         panel.add(getVerticalSpacingPanel());
-	JLabel labelTemp = new JLabel("Temperature(C)")	;
-	panel.add(labelTemp);
+		JLabel labelTemp = new JLabel("Current Temperature(C)")	;
+		panel.add(labelTemp);
         
 
         panel.add(getVerticalSpacingPanel());
-        JLabel labelSpo2 = new JLabel("Blood Oxygen(%)");
-	panel.add(labelSpo2);
+        JLabel labelSpo2 = new JLabel("Current Blood Oxygen(%)");
+        panel.add(labelSpo2);
         
 	
         panel.setLayout(boxlayout);
 	
 	return panel;
 }
-private JPanel vitalSignsReadingPanel() {
+
+private JPanel vitalSignsUpdateLabelPanel() {
 	
 	JPanel panel = new JPanel();
 	
         BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
-        hrReply = new JTextField(3);
-	panel.add(hrReply);
         
-	panel.add(getVerticalSpacingPanel());
-	bodyTempReply = new JTextField(3);
-	panel.add(bodyTempReply);
+        JLabel labelHR = new JLabel("Update HeartRate(bpm):")	;
+        panel.add(labelHR);
         
+
         panel.add(getVerticalSpacingPanel());
-        Spo2Reply = new JTextField(3);
-	panel.add(Spo2Reply);
+		JLabel labelTemp = new JLabel("Update Temperature(C)")	;
+		panel.add(labelTemp);
+        
+
+        panel.add(getVerticalSpacingPanel());
+        JLabel labelSpo2 = new JLabel("Update Blood Oxygen(%)");
+        panel.add(labelSpo2);
+        
 	
         panel.setLayout(boxlayout);
 	
 	return panel;
 }
 
-private JPanel vitalSignsUpdatePanel() {
+private JPanel vitalSignsReadingsPanel() {
 	
 	JPanel panel = new JPanel();
+	
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        
+        hrRequest = new JTextField("68",3);
+		panel.add(hrRequest);
+	        
+		panel.add(getVerticalSpacingPanel());
+		bodyTempRequest = new JTextField("36.6",3);
+		panel.add(bodyTempRequest);
+	    
+	    panel.add(getVerticalSpacingPanel());
+	    Spo2Request = new JTextField("98",3);
+	    panel.add(Spo2Request);
+        
+	
+        panel.setLayout(boxlayout);
+	
+	return panel;
+}
+
+	private JPanel vitalSignsCurrentReadingsPanel() {
+	
+		JPanel panel = new JPanel();
+		
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+	    
+		hrReply = new JTextField("68",3);
+        hrReply.setEditable(false);
+		panel.add(hrReply);
+	        
+		panel.add(getVerticalSpacingPanel());
+		bodyTempReply = new JTextField("36.6",3);
+		bodyTempReply.setEditable(false);
+		panel.add(bodyTempReply);
+        
+        panel.add(getVerticalSpacingPanel());
+        Spo2Reply = new JTextField("98",3);
+        Spo2Reply.setEditable(false);
+        panel.add(Spo2Reply);
+	
+	    panel.setLayout(boxlayout);
+	
+	return panel;
+	}
+
+	private JPanel vitalSignsUpdatePanel() {
+		
+		JPanel panel = new JPanel();
 	
         BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         
@@ -635,11 +717,21 @@ public static void main(String[] args) {
                 BoxLayout contentBoxLayout = new BoxLayout(contentPanel, BoxLayout.X_AXIS);
                 contentPanel.setLayout(contentBoxLayout);
                 
-                contentPanel.add(vitalSignsPanel());
+                contentPanel.add(vitalSignsCurrentLabelPanel());
                 contentPanel.add(getHorizontalSpacingPanel());
-                contentPanel.add(vitalSignsReadingPanel());
+                
+                contentPanel.add(vitalSignsCurrentReadingsPanel());
                 contentPanel.add(getHorizontalSpacingPanel());
+                
+                contentPanel.add(vitalSignsUpdateLabelPanel());
+                contentPanel.add(getHorizontalSpacingPanel());
+                
+                contentPanel.add(vitalSignsReadingsPanel());
+                contentPanel.add(getHorizontalSpacingPanel());
+                
                 contentPanel.add(vitalSignsUpdatePanel());
+                
+                
                 
                 panel.add(contentPanel);
                 panel.add(getVerticalSpacingPanel());
@@ -681,54 +773,223 @@ public static void main(String[] args) {
         switch (command) {
             case "bedControl":
                 closeFrame();
-                buildBedPage();
-                break;
+                
+    			buildBedPage();
+    			
+                ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+    			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub1 = 
+    					SmartBedControlServiceGrpc.newBlockingStub(channel);
+
+    			//empty message to reset
+    			ds.SmartBedControlService.Empty request1 = ds.SmartBedControlService.Empty.newBuilder().build();
+
+    			//retrieving reply from service
+    			ds.SmartBedControlService.GetBedPositionResponse response1 = blockingStub1.getBedPositionDo(request1);
+
+    			bedHeadPositionReply.setText( String.valueOf( response1.getBedHeadPosition()) );
+    			bedFootPositionReply.setText( String.valueOf( response1.getBedFootPosition()) );
+
+    			break;
             case "climateControl":
                 closeFrame();
+                
                 buildClimatePage();
+                
+                ManagedChannel channel5 = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
+                SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub5 = 
+                		SmartClimateControlServiceGrpc.newBlockingStub(channel5);
+
+    			//empty message to reset
+    			ds.SmartClimateControlService.GetClimateReadingRequest request5 = ds.SmartClimateControlService.GetClimateReadingRequest
+    					.newBuilder()
+    					.setRoomID(roomID)
+    					.build();
+
+    			//retrieving reply from service
+    			GetClimateReadingResponse response5 = blockingStub5.getClimateReadingDo(request5);
+
+    			temperatureReply.setText( String.valueOf( response5.getTemperature()) );
+    			humidityReply.setText( String.valueOf( response5.getHumidity()) );
+
                 break;
             case "vitalControl":
                 closeFrame();
                 buildVitalPage();
                 break;
-            case "resetBed":
-                // Reset bed logic
+                
+                
+                
+                
+                
+                
+                
+                //Begin Bed Controls
+            case "resetBedPosition":
+            	ManagedChannel channel4 = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+    			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub4 = 
+    					SmartBedControlServiceGrpc.newBlockingStub(channel4);
+
+    			//empty message to reset
+    			ds.SmartBedControlService.Empty request4 = ds.SmartBedControlService.Empty.newBuilder().build();
+
+    			//retrieving reply from service
+    			ds.SmartBedControlService.ResetBedPositionResponse response4 = blockingStub4.resetBedPositionDo(request4);
+
+    			bedHeadPositionReply.setText( String.valueOf( response4.getBedHeadPosition()) );
+    			bedFootPositionReply.setText( String.valueOf( response4.getBedFootPosition()) );
+    			bedStatus.setText(response4.getStatusMessage());
                 break;
-            case "incrementheadPosition":
-                // Increment head position
+                
+                //Bed Head Controls
+            case "incrementHeadCounter":
+            	double currentHeadValue = Double.parseDouble(bedHeadPositionReply.getText());
+            	double increment = 0.5;
+            	
+            	double newValue1 = currentHeadValue + increment;
+            	
+            	bedHeadPositionReply.setText(Double.toString(newValue1));
                 break;
-            case "decrementheadPosition":
-                // Decrement head position
+                
+            case "decrementHeadPosition":
+            	double currentHeadValue2 = Double.parseDouble(bedHeadPositionReply.getText());
+            	double decrement = 0.5;
+            	
+            	double newValue2 = currentHeadValue2 - decrement;
+            	
+            	bedHeadPositionReply.setText(Double.toString(newValue2));
                 break;
-            case "submitheadPosition":
-                // Submit head position
+                
+            case "submitHeadPosition":
+            	ManagedChannel channel2 = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+    			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub2 = 
+    					SmartBedControlServiceGrpc.newBlockingStub(channel2);
+
+    			//building message to set
+    			ds.SmartBedControlService.SetBedHeadPositionRequest request2 = ds.SmartBedControlService.SetBedHeadPositionRequest
+    					.newBuilder()
+    					.setBedHeadPosition(Float.parseFloat(bedHeadPositionReply.getText()))
+    					.build();
+
+    			//retrieving reply from service
+    			ds.SmartBedControlService.SetBedHeadPositionResponse response2 = blockingStub2.setBedHeadPositionDo(request2);
+
+    			bedHeadPositionReply.setText( String.valueOf( response2.getBedHeadPosition()) );
+    			bedStatus.setText(response2.getStatusMessage());
                 break;
-            case "incrementfootPosition":
-                // Increment foot position
+                
+                // Bed Foot Controls
+            case "incrementFootPosition":
+            	double currentFootValue = Double.parseDouble(bedFootPositionReply.getText());
+            	increment = 0.5;
+            	
+            	double newValue3 = currentFootValue + increment;
+            	
+            	bedFootPositionReply.setText(Double.toString(newValue3));
                 break;
-            case "decrementfootPosition":
-                // Decrement foot position
+                
+            case "decrementFootPosition":
+            	double currentFootValue2 = Double.parseDouble(bedFootPositionReply.getText());
+            	increment = 0.5;
+            	
+            	double newValue4 = currentFootValue2 - increment;
+            	
+            	bedFootPositionReply.setText(Double.toString(newValue4));
                 break;
-            case "submitfootPosition":
-                // Submit foot position
+                
+            case "submitFootPosition":
+            	ManagedChannel channel3 = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+    			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub3 = 
+    					SmartBedControlServiceGrpc.newBlockingStub(channel3);
+
+    			//building message to set
+    			ds.SmartBedControlService.SetBedFootPositionRequest request3 = ds.SmartBedControlService.SetBedFootPositionRequest
+    					.newBuilder()
+    					.setBedFootPosition(Float.parseFloat(bedFootPositionReply.getText()))
+    					.build();
+
+    			//retrieving reply from service
+    			ds.SmartBedControlService.SetBedFootPositionResponse response3 = blockingStub3.setBedFootPositionDo(request3);
+
+    			bedFootPositionReply.setText( String.valueOf( response3.getBedFootPosition()) );
+    			bedStatus.setText(response3.getStatusMessage());
                 break;
-            case "incrementtemperatureField":
-                // Increment temperature
+                
+                
+                
+                
+                
+                
+                
+                //Begin Climate Controls
+            case "incrementTemperature":
+            	double currentTemperatureValue = Double.parseDouble(temperatureReply.getText());
+            	increment = 0.5;
+            	
+            	double newValue5 = currentTemperatureValue + increment;
+            	
+            	temperatureReply.setText(Double.toString(newValue5));
+
                 break;
-            case "decrementtemperatureField":
-                // Decrement temperature
+            case "decrementTemperature":
+            	double currentTemperatureValue2 = Double.parseDouble(temperatureReply.getText());
+            	increment = 0.5;
+            	
+            	double newValue6 = currentTemperatureValue2 - increment;
+            	
+            	temperatureReply.setText(Double.toString(newValue6));
                 break;
-            case "submittemperatureField":
-                // Submit temperature
+            case "submitTemperature":
+            	ManagedChannel channel6 = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
+                SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub6 = 
+                		SmartClimateControlServiceGrpc.newBlockingStub(channel6);
+
+    			//empty message to reset
+    			ds.SmartClimateControlService.SetTemperatureRequest request6 = ds.SmartClimateControlService.SetTemperatureRequest
+    					.newBuilder()
+    					.setTemperature(Float.parseFloat(temperatureReply.getText()))
+    					.build();
+
+    			//retrieving reply from service
+    			ds.SmartClimateControlService.SetTemperatureResponse response6 = blockingStub6.setTemperatureDo(request6);
+
+    			temperatureReply.setText( String.valueOf( response6.getTemperature()) );
+    			climateStatus.setText( response6.getStatusMessage());
+    			
+    			break;
+                
+                //Humidity Controls
+            case "incrementHumidity":
+            	double currentHumidityValue = Double.parseDouble(humidityReply.getText());
+            	increment = 0.5;
+            	
+            	double newValue7 = currentHumidityValue + increment;
+            	
+            	humidityReply.setText(Double.toString(newValue7));
                 break;
-            case "incrementhumidityField":
-                // Increment humidity
+            case "decrementHumidity":
+            	double currentHumidityValue2 = Double.parseDouble(humidityReply.getText());
+            	increment = 0.5;
+            	
+            	double newValue8 = currentHumidityValue2 - increment;
+            	
+            	humidityReply.setText(Double.toString(newValue8));
                 break;
-            case "decrementhumidityField":
-                // Decrement humidity
-                break;
-            case "submithumidityField":
-                // Submit humidity
+            case "submitHumidity":
+            	ManagedChannel channel7 = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
+                SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub7 = 
+                		SmartClimateControlServiceGrpc.newBlockingStub(channel7);
+
+    			//empty message to reset
+    			ds.SmartClimateControlService.SetHumidityRequest request7 = ds.SmartClimateControlService.SetHumidityRequest
+    					.newBuilder()
+    					.setHumidity(Float.parseFloat(humidityReply.getText()))
+    					.build();
+
+    			//retrieving reply from service
+    			ds.SmartClimateControlService.SetHumidityResponse response7 = blockingStub7.setHumidityDo(request7);
+
+    			humidityReply.setText( String.valueOf( response7.getHumidity()) );
+    			climateStatus.setText( response7.getStatusMessage());
                 break;
             case "Return":
                 closeFrame();

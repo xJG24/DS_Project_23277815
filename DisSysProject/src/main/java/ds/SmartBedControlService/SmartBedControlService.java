@@ -91,8 +91,8 @@ public class SmartBedControlService extends SmartBedControlServiceImplBase{
 		bedFootPosition = 0.0F;
 		
 		ResetBedPositionResponse response = ResetBedPositionResponse.newBuilder()
-				.setBedHeadPosition(0.0F)
-				.setBedFootPosition(0.0F)
+				.setBedHeadPosition(bedHeadPosition)
+				.setBedFootPosition(bedFootPosition)
 				.setResult(OperationalStatus.Success)
 	            .setStatusMessage("Bed position reset successfully.")
 				.build();
