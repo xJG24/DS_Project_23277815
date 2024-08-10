@@ -50,20 +50,29 @@ public class SmartBedControlService extends SmartBedControlServiceImplBase{
 	    responseObserver.onCompleted();
 	}
 
-	// no error handling yet
-	// maybe a try catch block + a validation method? 
 	@Override
 	public void setBedHeadPositionDo(SetBedHeadPositionRequest request, StreamObserver<SetBedHeadPositionResponse> responseObserver) {
-		bedHeadPosition = request.getBedHeadPosition();
+		if (request.getBedHeadPosition() >= 0.0 && request.getBedHeadPosition() <= 10.0) {
+			bedHeadPosition = request.getBedHeadPosition();
+			SetBedHeadPositionResponse response = SetBedHeadPositionResponse.newBuilder()
+					.setBedHeadPosition(request.getBedHeadPosition())
+					.setResult(OperationalStatus.Success)
+		            .setStatusMessage("Head position adjusted successfully.")
+					.build();
+			
+			responseObserver.onNext(response);
+		    responseObserver.onCompleted();
+		} else {
+			SetBedHeadPositionResponse response = SetBedHeadPositionResponse.newBuilder()
+					.setBedHeadPosition(bedHeadPosition)
+					.setResult(OperationalStatus.Failure)
+		            .setStatusMessage("Head position out of range: Must be between 0.0 and 10.0.")
+					.build();
+			
+			responseObserver.onNext(response);
+		    responseObserver.onCompleted();
+		}
 		
-		SetBedHeadPositionResponse response = SetBedHeadPositionResponse.newBuilder()
-				.setBedHeadPosition(request.getBedHeadPosition())
-				.setResult(OperationalStatus.Success)
-	            .setStatusMessage("Head position adjusted successfully.")
-				.build();
-		
-		responseObserver.onNext(response);
-	    responseObserver.onCompleted();
 	}
 	
 	// no error handling yet
@@ -71,16 +80,29 @@ public class SmartBedControlService extends SmartBedControlServiceImplBase{
 	@Override
 	public void setBedFootPositionDo(SetBedFootPositionRequest request, StreamObserver<SetBedFootPositionResponse> responseObserver) {
 		
-		bedFootPosition = request.getBedFootPosition();
+		if(request.getBedFootPosition() >= 0.0 && request.getBedFootPosition() <= 10.0) {
+			bedFootPosition = request.getBedFootPosition();
+			
+			SetBedFootPositionResponse response = SetBedFootPositionResponse.newBuilder()
+					.setBedFootPosition(request.getBedFootPosition())
+					.setResult(OperationalStatus.Success)
+		            .setStatusMessage("Foot position adjusted successfully.")
+					.build();
+			
+			responseObserver.onNext(response);
+		    responseObserver.onCompleted();
+		} else {
+			SetBedFootPositionResponse response = SetBedFootPositionResponse.newBuilder()
+					.setBedFootPosition(bedFootPosition)
+					.setResult(OperationalStatus.Failure)
+		            .setStatusMessage("Foot position out of range: Must be between 0.0 and 10.0.")
+					.build();
+			
+			responseObserver.onNext(response);
+		    responseObserver.onCompleted();
+		}
 		
-		SetBedFootPositionResponse response = SetBedFootPositionResponse.newBuilder()
-				.setBedFootPosition(request.getBedFootPosition())
-				.setResult(OperationalStatus.Success)
-	            .setStatusMessage("Foot position adjusted successfully.")
-				.build();
 		
-		responseObserver.onNext(response);
-	    responseObserver.onCompleted();
 	}
 	
 	// no error handling yet

@@ -420,7 +420,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 
         return panel;
     }
-    
+
     private JPanel smartClimateStatusPanel() {
 
         JPanel panel = new JPanel();
@@ -738,6 +738,11 @@ public static void main(String[] args) {
 	
 		panel.add( smartClimateControlServiceTitlePanel() );
         panel.add(getVerticalSpacingPanel());
+        panel.add(smartClimateTemperatureControlPanel());
+        panel.add(getVerticalSpacingPanel());
+        panel.add(smartClimateHumidityControlPanel());
+        panel.add(getVerticalSpacingPanel());
+        panel.add(smartClimateStatusPanel());
 		
 
 
@@ -749,7 +754,7 @@ public static void main(String[] args) {
 		frame.pack();
 		frame.setVisible(true);
 	}
-        
+
         private void buildVitalPage() { 
 
 		frame = new JFrame("Vital Monitor Control App");
@@ -999,17 +1004,29 @@ public static void main(String[] args) {
     			SmartBedControlServiceGrpc.SmartBedControlServiceBlockingStub blockingStub2 = 
     					SmartBedControlServiceGrpc.newBlockingStub(channel2);
 
-    			//building message to set
-    			ds.SmartBedControlService.SetBedHeadPositionRequest request2 = ds.SmartBedControlService.SetBedHeadPositionRequest
-    					.newBuilder()
-    					.setBedHeadPosition(Float.parseFloat(bedHeadPositionReply.getText()))
-    					.build();
+    			try {
+    				//building message to set
+        			ds.SmartBedControlService.SetBedHeadPositionRequest request2 = ds.SmartBedControlService.SetBedHeadPositionRequest
+        					.newBuilder()
+        					.setBedHeadPosition(Float.parseFloat(bedHeadPositionReply.getText()))
+        					.build();
 
-    			//retrieving reply from service
-    			ds.SmartBedControlService.SetBedHeadPositionResponse response2 = blockingStub2.setBedHeadPositionDo(request2);
+        			//retrieving reply from service
+        			ds.SmartBedControlService.SetBedHeadPositionResponse response2 = blockingStub2.setBedHeadPositionDo(request2);
 
-    			bedHeadPositionReply.setText( String.valueOf( response2.getBedHeadPosition()) );
-    			bedStatus.setText(response2.getStatusMessage());
+        			bedHeadPositionReply.setText( String.valueOf( response2.getBedHeadPosition()) );
+        			bedStatus.setText(response2.getStatusMessage());
+    			} catch (Exception ex) {
+    	            ex.printStackTrace();
+    	        } finally {
+    	            if (channel2 != null) {
+    	                try {
+    	                	channel2.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    	                } catch (InterruptedException ex) {
+    	                	channel2.shutdownNow();
+    	                }
+    	            }
+    	        }
                 break;
                 
                 // Bed Foot Controls GUI methods
@@ -1085,6 +1102,8 @@ public static void main(String[] args) {
             	
             	temperatureReply.setText(Double.toString(newValue6));
                 break;
+                
+                
             case "submitTemperature":
             	ManagedChannel channel6 = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
                 SmartClimateControlServiceGrpc.SmartClimateControlServiceBlockingStub blockingStub6 = 
@@ -1286,7 +1305,7 @@ public static void main(String[] args) {
 					            .build());
 						
 						
-				        requestObserver.onCompleted();
+				        //requestObserver.onCompleted();
 
 					} catch (Exception ex) {
 			            ex.printStackTrace();

@@ -34,8 +34,6 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 		server.awaitTermination();
 	}
 	
-	
-		//no error handling yet
 		@Override
 		public void getClimateReadingDo(GetClimateReadingRequest request, StreamObserver<GetClimateReadingResponse> responseObserver) {
 		    
@@ -54,24 +52,43 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 		// maybe a try catch block + a validation method? 
 		@Override
 		public void setTemperatureDo(SetTemperatureRequest request, StreamObserver<SetTemperatureResponse> responseObserver) {
-			temperature = request.getTemperature();
 			
-			SetTemperatureResponse response = SetTemperatureResponse.newBuilder()
-					.setTemperature(temperature)
-					.setResult(OperationalStatus.Success)
-		            .setStatusMessage("Temperature successfully set to " + temperature + ".")
-					.build();
+			// if request is in range update variable 
+			if (request.getTemperature() >= 18 && request.getTemperature() <= 25) {
+				temperature = request.getTemperature();
+				
+				
+				SetTemperatureResponse response = SetTemperatureResponse.newBuilder()
+						.setTemperature(temperature)
+						.setResult(OperationalStatus.Success)
+			            .setStatusMessage("Temperature successfully set to " + temperature + ".")
+						.build();
+				
+				responseObserver.onNext(response);
+			    responseObserver.onCompleted();
+			    
+			// if request out of range keep variable as is 
+			} else {
+				SetTemperatureResponse response = SetTemperatureResponse.newBuilder()
+						.setTemperature(temperature)
+						.setResult(OperationalStatus.Failure)
+			            .setStatusMessage("Temperature Out Of Range: Must be between 18C and 25C.")
+						.build();
+				
+				responseObserver.onNext(response);
+			    responseObserver.onCompleted();
+			}
 			
-			responseObserver.onNext(response);
-		    responseObserver.onCompleted();
 		}
-		// no error handling yet
-		// maybe a try catch block + a validation method? 
+
+		
 		@Override
 		public void setHumidityDo(SetHumidityRequest request, StreamObserver<SetHumidityResponse> responseObserver) {
-			humidity = request.getHumidity();
 			
-			SetHumidityResponse response = SetHumidityResponse.newBuilder()
+			// if request is in range update variable 
+			if(request.getHumidity() >= 30 && 60 <= request.getHumidity()) {
+				humidity = request.getHumidity();
+				SetHumidityResponse response = SetHumidityResponse.newBuilder()
 					.setHumidity(humidity)
 					.setResult(OperationalStatus.Success)
 		            .setStatusMessage("Humidity successfully set to " + humidity + ".")
@@ -79,6 +96,20 @@ public class SmartClimateControlService extends SmartClimateControlServiceImplBa
 			
 			responseObserver.onNext(response);
 		    responseObserver.onCompleted();
+			
+			// if request out of range keep variable as is 
+			} else {
+				SetHumidityResponse response = SetHumidityResponse.newBuilder()
+						.setHumidity(humidity)
+						.setResult(OperationalStatus.Failure)
+			            .setStatusMessage("Humidity Out Of Range: Must be between 30% and 60%.")
+						.build();
+				
+				responseObserver.onNext(response);
+			    responseObserver.onCompleted();
+			}
+				
+				
 		}		
 
 }
