@@ -644,7 +644,7 @@ public static void main(String[] args) {
 
 	gui.buildHomePage();
 }
-
+	// helper method to clear old threads
 	private void closeFrame() {
         if (frame != null) {
             frame.dispose();
