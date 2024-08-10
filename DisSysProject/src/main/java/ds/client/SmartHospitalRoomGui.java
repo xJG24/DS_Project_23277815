@@ -5,6 +5,16 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import ds.SmartBedControlService.SmartBedControlServiceGrpc;
+import ds.SmartClimateControlService.SmartClimateControlServiceGrpc;
+import ds.VitalSignsControlService.VitalSignsControlServiceGrpc;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,17 +24,36 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import ds.SmartBedControlService.SmartBedControlServiceGrpc;
-import ds.SmartClimateControlService.SmartClimateControlServiceGrpc;
-import ds.VitalSignsControlService.VitalSignsControlServiceGrpc;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 
 public class SmartHospitalRoomGui implements ActionListener{
+    
+        // used to close frames when swappig between services
+    private JFrame frame; 
+    
+    //used to update textfields
+    private JTextField hrReply, bodyTempReply, Spo2Reply;
 
 //first page -> select services 
-	private JPanel getSmartBedControlServicePanel() {
+    
+    private JPanel getVerticalSpacingPanel() {
+		
+		JPanel panel = new JPanel();
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+		panel.add(Box.createRigidArea(new Dimension(50, 30)));
+		panel.setLayout(boxlayout);
+		return panel;
+	}
+    
+    private JPanel getHorizontalSpacingPanel() {
+		
+		JPanel panel = new JPanel();
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+		panel.add(Box.createRigidArea(new Dimension(20,0)));
+		panel.setLayout(boxlayout);
+		return panel;
+	}
+    private JPanel getSmartBedControlServicePanel() {
 		
 		JPanel panel = new JPanel();
 
@@ -34,9 +63,17 @@ public class SmartHospitalRoomGui implements ActionListener{
 		panel.add(label);
 		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 		
-		JButton button = new JButton("Enter");
-		button.addActionListener(this);
-		panel.add(button);
+                
+                JButton bedButton = new JButton("Enter");
+                bedButton.setActionCommand("bedControl");
+                bedButton.addActionListener(this);
+                panel.add(bedButton);
+                
+                
+//		JButton button = new JButton("Enter");
+//		button.addActionListener(this);
+//              button.setActionCommand(actionCommand);
+//		panel.add(button);
 		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 		
 		panel.setLayout(boxlayout);
@@ -44,7 +81,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 		return panel;
 	}
 	
-	private JPanel getSmartClimateControlServicePanel() {
+    private JPanel getSmartClimateControlServicePanel() {
 		
 		JPanel panel = new JPanel();
 
@@ -52,11 +89,12 @@ public class SmartHospitalRoomGui implements ActionListener{
 		
 		JLabel label = new JLabel("Climate Control Suite:")	;
 		panel.add(label);
-		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		panel.add(Box.createRigidArea(new Dimension(66, 0)));
 		
-		JButton button = new JButton("Enter");
-		button.addActionListener(this);
-		panel.add(button);
+		JButton climateButton = new JButton("Enter");
+                climateButton.setActionCommand("climateControl");
+                climateButton.addActionListener(this); 
+                panel.add(climateButton);
 		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 		
 		panel.setLayout(boxlayout);
@@ -64,7 +102,7 @@ public class SmartHospitalRoomGui implements ActionListener{
 		return panel;
 	}
 	
-private JPanel getVitalSignsControlServicePanel() {
+    private JPanel getVitalSignsControlServicePanel() {
 		
 		JPanel panel = new JPanel();
 
@@ -74,9 +112,10 @@ private JPanel getVitalSignsControlServicePanel() {
 		panel.add(label);
 		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 		
-		JButton button = new JButton("Enter");
-		button.addActionListener(this);
-		panel.add(button);
+		JButton vitalButton = new JButton("Enter");
+                vitalButton.setActionCommand("vitalControl");
+		vitalButton.addActionListener(this);
+		panel.add(vitalButton);
 		panel.add(Box.createRigidArea(new Dimension(50, 0)));
 		
 		panel.setLayout(boxlayout);
@@ -84,9 +123,10 @@ private JPanel getVitalSignsControlServicePanel() {
 		return panel;
 	}
 
-// second page -> Smart Bed Controls ################################################################################
-//title
-private JPanel smartBedControlServiceTitlePanel() {
+    // second page -> Smart Bed Controls ################################################################################
+    //title
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    private JPanel smartBedControlServiceTitlePanel() {
 	
 	JPanel panel = new JPanel();
 
@@ -94,9 +134,10 @@ private JPanel smartBedControlServiceTitlePanel() {
 	
 	JLabel label = new JLabel("Smart Bed Control Suite:")	;
 	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
+	panel.add(Box.createRigidArea(new Dimension(450, 0)));
 	
 	JButton buttonReturn = new JButton("Return");
+        buttonReturn.setActionCommand("Return");
 	buttonReturn.addActionListener(this);
 	panel.add(buttonReturn);
 	panel.add(Box.createRigidArea(new Dimension(50, 0)));
@@ -105,7 +146,7 @@ private JPanel smartBedControlServiceTitlePanel() {
 	return panel;
 }
 //head controls
-private JPanel smartBedHeadControlPanel() {
+    private JPanel smartBedHeadControlPanel() {
 	
 	JPanel panel = new JPanel();
 
@@ -149,7 +190,7 @@ private JPanel smartBedHeadControlPanel() {
 }
 
 //foot controls
-private JPanel smartBedFootControlPanel() {
+    private JPanel smartBedFootControlPanel() {
 	
 	JPanel panel = new JPanel();
 
@@ -192,7 +233,7 @@ private JPanel smartBedFootControlPanel() {
 	return panel;
 }
 
-private JPanel smartBedResetPanel() {
+    private JPanel smartBedResetPanel() {
 	
 	JPanel panel = new JPanel();
 
@@ -200,7 +241,7 @@ private JPanel smartBedResetPanel() {
 	
 	JLabel label = new JLabel("Reset Smart Bed Position:")	;
 	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
+	panel.add(Box.createRigidArea(new Dimension(450, 0)));
 	
 	JButton buttonReset = new JButton("Reset");
 	buttonReset.addActionListener(this);
@@ -211,113 +252,115 @@ private JPanel smartBedResetPanel() {
 	return panel;
 }
 
-//third page -> Smart Climate Controls ################################################################################
-//title
-private JPanel smartClimateControlServiceTitlePanel() {
-	
-	JPanel panel = new JPanel();
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //third page -> Smart Climate Controls ################################################################################
+    //title
+    private JPanel smartClimateControlServiceTitlePanel() {
 
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-	
-	JLabel label = new JLabel("Climate Control Suite:")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
-	
-	JButton buttonReturn = new JButton("Return");
-	buttonReturn.addActionListener(this);
-	panel.add(buttonReturn);
-	panel.add(Box.createRigidArea(new Dimension(50, 0)));
-	
+            JPanel panel = new JPanel();
 
-	return panel;
-}
-//Temp controls
-private JPanel smartClimateTemperatureControlPanel() {
-	
-	JPanel panel = new JPanel();
+            BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
 
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-	
-	JLabel label = new JLabel("Adjust Temperature(C): ")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
-	
-	
-	// create buttons to increment or decrement head position
-	JButton minusButtonTemperature = new JButton("-");
-	minusButtonTemperature.addActionListener(this);
- panel.add(minusButtonTemperature);
+            JLabel label = new JLabel("Climate Control Suite:")	;
+            panel.add(label);
+            panel.add(Box.createRigidArea(new Dimension(450, 0)));
 
- panel.add(Box.createRigidArea(new Dimension(10, 0)));
+            JButton buttonReturn = new JButton("Return");
+            buttonReturn.addActionListener(this);
+            panel.add(buttonReturn);
+            panel.add(Box.createRigidArea(new Dimension(50, 0)));
 
- // Display current Temperature
- // set text to getTemperature 
- JTextField currentTemperature = new JTextField("0.0", 5);
- currentTemperature.setEditable(false);
- panel.add(currentTemperature);
 
- panel.add(Box.createRigidArea(new Dimension(10, 0)));
+            return panel;
+    }
+    //Temp controls
+    private JPanel smartClimateTemperatureControlPanel() {
 
- JButton plusButtonTemperature = new JButton("+");
- plusButtonTemperature.addActionListener(this);
- panel.add(plusButtonTemperature);
+            JPanel panel = new JPanel();
 
- panel.add(Box.createRigidArea(new Dimension(20, 0)));
+            BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
 
- // Create the submit button for setHeadPosition method
- JButton submitButtonTemperature = new JButton("Submit");
- submitButtonTemperature.addActionListener(this);
- panel.add(submitButtonTemperature);
- panel.add(Box.createRigidArea(new Dimension(50, 0)));
-	
-	panel.setLayout(boxlayout);
+            JLabel label = new JLabel("Adjust Temperature(C): ")	;
+            panel.add(label);
+            panel.add(Box.createRigidArea(new Dimension(250, 0)));
 
-	return panel;
-}
 
-//humidity controls
-private JPanel smartClimateHumidityControlPanel() {
-	
-	JPanel panel = new JPanel();
+            // create buttons to increment or decrement head position
+            JButton minusButtonTemperature = new JButton("-");
+            minusButtonTemperature.addActionListener(this);
+            panel.add(minusButtonTemperature);
 
-	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-	
-	JLabel label = new JLabel("Adjust Humidity(%): ")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
-	
-	
-	// create buttons to increment or decrement head position
-	JButton minusButtonHumidity = new JButton("-");
-	minusButtonHumidity.addActionListener(this);
- panel.add(minusButtonHumidity);
+            panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
- panel.add(Box.createRigidArea(new Dimension(10, 0)));
+            // Display current Temperature
+            // set text to getTemperature 
+            JTextField currentTemperature = new JTextField("0.0", 5);
+            currentTemperature.setEditable(false);
+            panel.add(currentTemperature);
 
- // Display current Humidity
- // set text to getHumidity
- JTextField currentHumidity = new JTextField("0.0", 5);
- currentHumidity.setEditable(false);
- panel.add(currentHumidity);
+            panel.add(Box.createRigidArea(new Dimension(10, 0)));
 
- panel.add(Box.createRigidArea(new Dimension(10, 0)));
+            JButton plusButtonTemperature = new JButton("+");
+            plusButtonTemperature.addActionListener(this);
+            panel.add(plusButtonTemperature);
 
- JButton plusButtonHumidity = new JButton("+");
- plusButtonHumidity.addActionListener(this);
- panel.add(plusButtonHumidity);
+            panel.add(Box.createRigidArea(new Dimension(20, 0)));
 
- panel.add(Box.createRigidArea(new Dimension(20, 0)));
+     // Create the submit button for setHeadTemperature method
+     JButton submitButtonTemperature = new JButton("Submit");
+     submitButtonTemperature.addActionListener(this);
+     panel.add(submitButtonTemperature);
+     panel.add(Box.createRigidArea(new Dimension(50, 0)));
 
- // Create the submit button for setHumidity method
- JButton submitButtonHumidity = new JButton("Submit");
- submitButtonHumidity.addActionListener(this);
- panel.add(submitButtonHumidity);
- panel.add(Box.createRigidArea(new Dimension(50, 0)));
-	
-	panel.setLayout(boxlayout);
+            panel.setLayout(boxlayout);
 
-	return panel;
-}
+            return panel;
+    }
+
+    //humidity controls
+    private JPanel smartClimateHumidityControlPanel() {
+
+            JPanel panel = new JPanel();
+
+            BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+
+            JLabel label = new JLabel("Adjust Humidity(%): ")	;
+            panel.add(label);
+            panel.add(Box.createRigidArea(new Dimension(300, 0)));
+
+
+            // create buttons to increment or decrement head position
+            JButton minusButtonHumidity = new JButton("-");
+            minusButtonHumidity.addActionListener(this);
+     panel.add(minusButtonHumidity);
+
+     panel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+     // Display current Humidity
+     // set text to getHumidity
+     JTextField currentHumidity = new JTextField("0.0", 5);
+     currentHumidity.setEditable(false);
+     panel.add(currentHumidity);
+
+     panel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+     JButton plusButtonHumidity = new JButton("+");
+     plusButtonHumidity.addActionListener(this);
+     panel.add(plusButtonHumidity);
+
+     panel.add(Box.createRigidArea(new Dimension(20, 0)));
+
+     // Create the submit button for setHumidity method
+     JButton submitButtonHumidity = new JButton("Submit");
+     submitButtonHumidity.addActionListener(this);
+     panel.add(submitButtonHumidity);
+     panel.add(Box.createRigidArea(new Dimension(50, 0)));
+
+            panel.setLayout(boxlayout);
+
+            return panel;
+    }
 
 //fourth page -> Vital Monitor Controls ################################################################################
 
@@ -327,148 +370,106 @@ private JPanel vitalSignsServiceTitlePanel() {
 
 	BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
 	
-	JLabel label = new JLabel("Vital Monitor Suite:")	;
-	panel.add(label);
-	panel.add(Box.createRigidArea(new Dimension(300, 0)));
+	JLabel labelTitle = new JLabel("Vital Monitor Suite:")	;
+	panel.add(labelTitle);
+	panel.add(Box.createRigidArea(new Dimension(10, 0)));
+	JLabel labelPatient = new JLabel("(PatientID: 1103465)")	;
+	panel.add(labelPatient);
+	panel.add(Box.createRigidArea(new Dimension(400, 0)));
 	
 	JButton buttonReturn = new JButton("Return");
 	buttonReturn.addActionListener(this);
 	panel.add(buttonReturn);
 	panel.add(Box.createRigidArea(new Dimension(50, 0)));
 	
+	panel.setLayout(boxlayout);
+	
+	return panel;
+}
 
+private JPanel vitalSignsPanel() {
+	
+	JPanel panel = new JPanel();
+	
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        
+        
+        JLabel labelHR = new JLabel("HeartRate(bpm):")	;
+	panel.add(labelHR);
+        
+
+        panel.add(getVerticalSpacingPanel());
+	JLabel labelTemp = new JLabel("Temperature(C)")	;
+	panel.add(labelTemp);
+        
+
+        panel.add(getVerticalSpacingPanel());
+        JLabel labelSpo2 = new JLabel("Blood Oxygen(%)");
+	panel.add(labelSpo2);
+        
+	
+        panel.setLayout(boxlayout);
+	
+	return panel;
+}
+private JPanel vitalSignsReadingPanel() {
+	
+	JPanel panel = new JPanel();
+	
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        
+        hrReply = new JTextField(3);
+	panel.add(hrReply);
+        
+	panel.add(getVerticalSpacingPanel());
+	bodyTempReply = new JTextField(3);
+	panel.add(bodyTempReply);
+        
+        panel.add(getVerticalSpacingPanel());
+        Spo2Reply = new JTextField(3);
+	panel.add(Spo2Reply);
+	
+        panel.setLayout(boxlayout);
+	
+	return panel;
+}
+
+private JPanel vitalSignsUpdatePanel() {
+	
+	JPanel panel = new JPanel();
+	
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        
+        panel.add(Box.createRigidArea(new Dimension(20, 100)));
+        
+        JButton buttonUpdate = new JButton("Update");
+            buttonUpdate.setActionCommand("setVitals");
+            buttonUpdate.addActionListener(this);
+            panel.add(buttonUpdate);
+            panel.add(Box.createRigidArea(new Dimension(50, 0)));
+        
+        panel.setLayout(boxlayout);
+	
 	return panel;
 }
 	
+	
+public static void main(String[] args) {
 
-//sample code ################################################################################################################
-	private JTextField entry1, reply1;
-	private JTextField entry2, reply2;
-	private JTextField entry3, reply3;
-	private JTextField entry4, reply4;
+	SmartHospitalRoomGui gui = new SmartHospitalRoomGui();
+
+	gui.buildHomePage();
+}
+       private void closeFrame() {
+        if (frame != null) {
+            frame.dispose();
+        }
+}
 
 
-	private JPanel getService1JPanel() {
+	private void buildHomePage() { 
 
-		JPanel panel = new JPanel();
-
-		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-
-		JLabel label = new JLabel("Enter value")	;
-		panel.add(label);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		entry1 = new JTextField("",10);
-		panel.add(entry1);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		JButton button = new JButton("Invoke Service 1");
-		button.addActionListener(this);
-		panel.add(button);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		reply1 = new JTextField("", 10);
-		reply1 .setEditable(false);
-		panel.add(reply1 );
-
-		panel.setLayout(boxlayout);
-
-		return panel;
-
-	}
-
-	private JPanel getService2JPanel() {
-
-		JPanel panel = new JPanel();
-
-		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-
-		JLabel label = new JLabel("Enter value")	;
-		panel.add(label);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		entry2 = new JTextField("",10);
-		panel.add(entry2);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		JButton button = new JButton("Invoke Service 2");
-		button.addActionListener(this);
-		panel.add(button);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		reply2 = new JTextField("", 10);
-		reply2 .setEditable(false);
-		panel.add(reply2 );
-
-		panel.setLayout(boxlayout);
-
-		return panel;
-
-	}
-
-	private JPanel getService3JPanel() {
-
-		JPanel panel = new JPanel();
-
-		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-
-		JLabel label = new JLabel("Enter value")	;
-		panel.add(label);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		entry3 = new JTextField("",10);
-		panel.add(entry3);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		JButton button = new JButton("Invoke Service 3");
-		button.addActionListener(this);
-		panel.add(button);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		reply3 = new JTextField("", 10);
-		reply3 .setEditable(false);
-		panel.add(reply3 );
-
-		panel.setLayout(boxlayout);
-
-		return panel;
-
-	}
-
-	private JPanel getService4JPanel() {
-
-		JPanel panel = new JPanel();
-
-		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
-
-		JLabel label = new JLabel("Enter value")	;
-		panel.add(label);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		entry4 = new JTextField("",10);
-		panel.add(entry4);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		JButton button = new JButton("Invoke Service 4");
-		button.addActionListener(this);
-		panel.add(button);
-		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		reply4 = new JTextField("", 10);
-		reply4 .setEditable(false);
-		panel.add(reply4 );
-
-		panel.setLayout(boxlayout);
-
-		return panel;
-
-	}
-	public static void main(String[] args) {
-
-		ControllerGUI gui = new ControllerGUI();
-
-		gui.build();
-	}
-
-	private void build() { 
-
-		JFrame frame = new JFrame("Smart Hospital Room App");
+		frame = new JFrame("Smart Hospital Room App");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Set the panel to add buttons
@@ -482,9 +483,11 @@ private JPanel vitalSignsServiceTitlePanel() {
 		// Set border for the panel
 		panel.setBorder(new EmptyBorder(new Insets(50, 100, 50, 100)));
 	
-		panel.add( getService1JPanel() );
-		panel.add( getService2JPanel() );
-		panel.add( getService3JPanel() );
+		panel.add( getSmartBedControlServicePanel() );
+                panel.add(getVerticalSpacingPanel());
+		panel.add( getSmartClimateControlServicePanel() );
+                panel.add(getVerticalSpacingPanel());
+                panel.add( getVitalSignsControlServicePanel() );
 
 
 		// Set size for the frame
@@ -495,89 +498,196 @@ private JPanel vitalSignsServiceTitlePanel() {
 		frame.pack();
 		frame.setVisible(true);
 	}
+        
+ 
+        
+        private void buildBedPage() { 
 
+		frame = new JFrame("Smart Bed Control App");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton button = (JButton)e.getSource();
-		String label = button.getActionCommand();  
+		// Set the panel to add buttons
+		JPanel panel = new JPanel();
 
-		if (label.equals("Invoke Service 1")) {
-			System.out.println("service 1 to be invoked ...");
+		// Set the BoxLayout to be X_AXIS: from left to right
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
 
-		
-			/*
-			 * 
-			 */
-			ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
-			Service1Grpc.Service1BlockingStub blockingStub = Service1Grpc.newBlockingStub(channel);
+		panel.setLayout(boxlayout);
 
-			//preparing message to send
-			ds.service1.RequestMessage request = ds.service1.RequestMessage.newBuilder().setText(entry1.getText()).build();
+		// Set border for the panel
+		panel.setBorder(new EmptyBorder(new Insets(50, 100, 50, 100)));
+	
+		panel.add( smartBedControlServiceTitlePanel() );
+                panel.add(getVerticalSpacingPanel());
+		panel.add( smartBedHeadControlPanel() );
+                panel.add(getVerticalSpacingPanel());
+                panel.add( smartBedFootControlPanel() );
+                panel.add(getVerticalSpacingPanel());
+                panel.add(smartBedResetPanel());
 
-			//retreving reply from service
-			ds.service1.ResponseMessage response = blockingStub.service1Do(request);
+		// Set size for the frame
+		frame.setSize(600, 600);
 
-			reply1.setText( String.valueOf( response.getLength()) );
-		
-		}else if (label.equals("Invoke Service 2")) {
-			System.out.println("service 2 to be invoked ...");
-
-		
-			/*
-			 * 
-			 */
-			ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
-			Service2Grpc.Service2BlockingStub blockingStub = Service2Grpc.newBlockingStub(channel);
-
-			//preparing message to send
-			ds.service2.RequestMessage request = ds.service2.RequestMessage.newBuilder().setText(entry2.getText()).build();
-
-			//retreving reply from service
-			ds.service2.ResponseMessage response = blockingStub.service2Do(request);
-
-			reply2.setText( String.valueOf( response.getLength()) );
-			
-		}else if (label.equals("Invoke Service 3")) {
-			System.out.println("service 3 to be invoked ...");
-
-		
-			/*
-			 * 
-			 */
-			ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
-			Service3Grpc.Service3BlockingStub blockingStub = Service3Grpc.newBlockingStub(channel);
-
-			//preparing message to send
-			ds.service3.RequestMessage request = ds.service3.RequestMessage.newBuilder().setText(entry3.getText()).build();
-
-			//retreving reply from service
-			ds.service3.ResponseMessage response = blockingStub.service3Do(request);
-
-			reply3.setText( String.valueOf( response.getLength()) );
-		
-		}else if (label.equals("Invoke Service 4")) {
-			System.out.println("service 4 to be invoked ...");
-
-		
-			/*
-			 * 
-			 */
-			ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50054).usePlaintext().build();
-			Service4Grpc.Service4BlockingStub blockingStub = Service4Grpc.newBlockingStub(channel);
-
-			//preparing message to send
-			ds.service4.RequestMessage request = ds.service4.RequestMessage.newBuilder().setText(entry4.getText()).build();
-
-			//retreving reply from service
-			ds.service4.ResponseMessage response = blockingStub.service4Do(request);
-
-			reply4.setText( String.valueOf( response.getLength()) );
-		
-		}else{
-			
-		}
-
+		// Set the window to be visible as the default to be false
+		frame.add(panel);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
+        private void buildClimatePage() { 
+
+		frame = new JFrame("Climate Control App");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		// Set the panel to add buttons
+		JPanel panel = new JPanel();
+
+		// Set the BoxLayout to be X_AXIS: from left to right
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+
+		panel.setLayout(boxlayout);
+
+		// Set border for the panel
+		panel.setBorder(new EmptyBorder(new Insets(50, 100, 50, 100)));
+	
+		panel.add( smartClimateControlServiceTitlePanel() );
+                panel.add(getVerticalSpacingPanel());
+		panel.add( smartClimateTemperatureControlPanel() );
+                panel.add(getVerticalSpacingPanel());
+                panel.add( smartClimateHumidityControlPanel() );
+                panel.add(getVerticalSpacingPanel());
+
+
+		// Set size for the frame
+		frame.setSize(600, 600);
+
+		// Set the window to be visible as the default to be false
+		frame.add(panel);
+		frame.pack();
+		frame.setVisible(true);
+	}
+        
+        private void buildVitalPage() { 
+
+		frame = new JFrame("Vital Monitor Control App");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		// Set the panel to add buttons
+		JPanel panel = new JPanel();
+
+		// Set the BoxLayout to be X_AXIS: from left to right
+		BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        
+                panel.setLayout(boxlayout);
+
+		// Set border for the panel
+		panel.setBorder(new EmptyBorder(new Insets(50, 100, 50, 100)));
+	
+		panel.add( vitalSignsServiceTitlePanel() );
+                panel.add(getVerticalSpacingPanel());
+                
+                JPanel contentPanel = new JPanel();
+                
+                BoxLayout contentBoxLayout = new BoxLayout(contentPanel, BoxLayout.X_AXIS);
+                contentPanel.setLayout(contentBoxLayout);
+                
+                contentPanel.add(vitalSignsPanel());
+                contentPanel.add(getHorizontalSpacingPanel());
+                contentPanel.add(vitalSignsReadingPanel());
+                contentPanel.add(getHorizontalSpacingPanel());
+                contentPanel.add(vitalSignsUpdatePanel());
+                
+                panel.add(contentPanel);
+                
+                frame.add(panel);
+                frame.pack();
+                frame.setVisible(true);
+                
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        switch (command) {
+            case "bedControl":
+                closeFrame();
+                buildBedPage();
+                break;
+            case "climateControl":
+                closeFrame();
+                buildClimatePage();
+                break;
+            case "vitalControl":
+                closeFrame();
+                buildVitalPage();
+                break;
+            case "resetBed":
+                // Reset bed logic
+                break;
+            case "incrementheadPosition":
+                // Increment head position
+                break;
+            case "decrementheadPosition":
+                // Decrement head position
+                break;
+            case "submitheadPosition":
+                // Submit head position
+                break;
+            case "incrementfootPosition":
+                // Increment foot position
+                break;
+            case "decrementfootPosition":
+                // Decrement foot position
+                break;
+            case "submitfootPosition":
+                // Submit foot position
+                break;
+            case "incrementtemperatureField":
+                // Increment temperature
+                break;
+            case "decrementtemperatureField":
+                // Decrement temperature
+                break;
+            case "submittemperatureField":
+                // Submit temperature
+                break;
+            case "incrementhumidityField":
+                // Increment humidity
+                break;
+            case "decrementhumidityField":
+                // Decrement humidity
+                break;
+            case "submithumidityField":
+                // Submit humidity
+                break;
+            case "Return":
+                closeFrame();
+                buildHomePage();
+                break;
+        }
+    }
 }
