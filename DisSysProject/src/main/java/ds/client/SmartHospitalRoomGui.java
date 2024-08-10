@@ -32,7 +32,7 @@ public class SmartHospitalRoomGui implements ActionListener{
     private JFrame frame; 
     
     //used to update textfields
-    private JTextField hrReply, bodyTempReply, Spo2Reply;
+    private JTextField bedStatus, climateStatus, vitalStatus, hrReply, bodyTempReply, Spo2Reply;
 
 //first page -> select services 
     
@@ -317,6 +317,20 @@ public class SmartHospitalRoomGui implements ActionListener{
 
             return panel;
     }
+    
+    private JPanel smartBedStatusPanel() {
+
+        JPanel panel = new JPanel();
+
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+
+        bedStatus = new JTextField(10);
+        panel.add(bedStatus);
+        
+        panel.setLayout(boxlayout);
+
+        return panel;
+    }
 
     //humidity controls
     private JPanel smartClimateHumidityControlPanel() {
@@ -360,6 +374,20 @@ public class SmartHospitalRoomGui implements ActionListener{
             panel.setLayout(boxlayout);
 
             return panel;
+    }
+    
+    private JPanel smartClimateStatusPanel() {
+
+        JPanel panel = new JPanel();
+
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+
+        climateStatus = new JTextField(10);
+        panel.add(climateStatus);
+        
+        panel.setLayout(boxlayout);
+
+        return panel;
     }
 
 //fourth page -> Vital Monitor Controls ################################################################################
@@ -452,7 +480,20 @@ private JPanel vitalSignsUpdatePanel() {
 	
 	return panel;
 }
-	
+
+private JPanel smartVitalSignsStatusPanel() {
+
+    JPanel panel = new JPanel();
+
+    BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+
+    vitalStatus = new JTextField(10);
+    panel.add(vitalStatus);
+    
+    panel.setLayout(boxlayout);
+
+    return panel;
+}
 	
 public static void main(String[] args) {
 
@@ -524,6 +565,8 @@ public static void main(String[] args) {
                 panel.add( smartBedFootControlPanel() );
                 panel.add(getVerticalSpacingPanel());
                 panel.add(smartBedResetPanel());
+                panel.add(getVerticalSpacingPanel());
+                panel.add(smartBedStatusPanel());
 
 		// Set size for the frame
 		frame.setSize(600, 600);
@@ -556,6 +599,7 @@ public static void main(String[] args) {
                 panel.add(getVerticalSpacingPanel());
                 panel.add( smartClimateHumidityControlPanel() );
                 panel.add(getVerticalSpacingPanel());
+                panel.add(smartClimateStatusPanel());
 
 
 		// Set size for the frame
@@ -598,6 +642,8 @@ public static void main(String[] args) {
                 contentPanel.add(vitalSignsUpdatePanel());
                 
                 panel.add(contentPanel);
+                panel.add(getVerticalSpacingPanel());
+                panel.add(smartVitalSignsStatusPanel());
                 
                 frame.add(panel);
                 frame.pack();
